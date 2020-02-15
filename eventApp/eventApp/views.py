@@ -8,7 +8,7 @@ from chatterbot import ChatBot
 chatbot = ChatBot(
     'Mehak',
 )
-chatbot.trainer.export_for_training('/Users/mehakluthra/Documents/django-chat/comedy/custom_corpus/mehak.yml')
+chatbot.trainer.export_for_training('/Users/mehakluthra/Documents/Event_Management_Chatterbot/eventApp/custom_corpus/mehak.yml')
 
 # Train based on the english corpus
 
