@@ -4,11 +4,13 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 
 from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 
 chatbot = ChatBot(
     'Mehak',
 )
-chatbot.trainer.export_for_training('/Users/mehakluthra/Documents/Event_Management_Chatterbot/eventApp/custom_corpus/mehak.yml')
+trainer = ChatterBotCorpusTrainer(chatbot.storage)
+trainer.train("/Users/mehakluthra/Documents/Event_Management_Chatterbot/eventApp/custom_corpus/mehak.yml")
 
 # Train based on the english corpus
 
