@@ -16,15 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from eventApp.views import home, get_response
-
+from eventApp import views
 from django.conf.urls.static import static
 from django.conf import settings
 
+admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),
-    path('get-response/', get_response),
+    path('chat/', views.home),
+    path('get-response/', views.get_response),
+    path("", views.homee, name="login"),
+    path("register/",views.register),
+    #path("listAllEvents/", views.list_all_events),
+    path("eventDetail/", views.event_detail),
+    path("listAllEvents", views.login_request),
+    path("logout_request", views.logout_request)
 ]
 
 if settings.DEBUG == True:
