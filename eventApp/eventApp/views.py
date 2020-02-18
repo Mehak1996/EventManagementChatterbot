@@ -14,6 +14,7 @@ chatbot = ChatBot(
 )
 trainer = ChatterBotCorpusTrainer(chatbot.storage)
 trainer.train("/Users/mehakluthra/Documents/Event_Management_Chatterbot/eventApp/custom_corpus/mehak.yml")
+
 # Train based on the english corpus
 
 #Already trained and it's supposed to be persistent
