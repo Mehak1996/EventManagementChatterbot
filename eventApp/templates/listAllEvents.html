@@ -1,0 +1,76 @@
+{% load static %}
+ <html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel='stylesheet' href="{% static 'css/events.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <title>Welcome</title>
+</head>
+
+<body>
+
+    <header class="nameHeader" >
+        <h1 >Welcome {{request.user.username}}</h1>
+        <form action="logout_request"> <button class="editButton" style="vertical-align:middle;">Logout </button>
+        </form>
+    </header>
+
+    <div class="row">
+    <div class="column">
+        <img src="/static/img/abcimage.jpg" alt="Avatar" >
+        <button class="editButton" style="vertical-align:middle; float:right">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i> </button>
+        <div onclick="location.href='eventDetail';""><h2>Event Ejdknv 556</h2></div>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina </p>
+        <p>Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+    </div>
+    <hr class="rounded">
+    <div class="column">
+        <img src="/static/img/abcimage.jpg" alt="Avatar" >
+        <button class="editButton" style="vertical-align:middle; float:right">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i></button>
+        <h2>Event 2</h2>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina </p>
+        <p>Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+         </div>
+    <hr class="rounded">
+    <div class="column">
+        <img src="/static/img/abcimage.jpg" alt="Avatar" >
+        <button class="editButton" style="vertical-align:middle; float:right">Edit <i class="fas fa-edit"></i> </button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i></button>
+        <h2>Event 3</h2>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina <p>
+        <p>Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+    </div>
+    <hr class="rounded">
+    <div class="column" >
+        <img src="/static/img/abcimage.jpg" alt="Avatar">
+        <button class="editButton" style="vertical-align:middle; float:right">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i></button>
+        <h2>Event 4</h2>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina </p>
+        <p> Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+    </div>
+    <hr class="rounded">
+    <div class="column" >
+        <img src="/static/img/abcimage.jpg" alt="Avatar">
+        <button class="editButton" style="vertical-align:middle; float:right">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i></button>
+        <h2>Event 4</h2>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina </p>
+        <p> Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+    </div>
+    <hr class="rounded">
+    <div class="column" >
+        <img src="/static/img/abcimage.jpg" alt="Avatar">
+        <button class="editButton" style="vertical-align:middle; float:right">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i></button>
+        <h2>Event 4</h2>
+        <p class="venue"><i class="fas fa-calendar"></i>  Tuesday, 20th Feb 2020, The Owl,University of regina </p>
+        <p> Description absnf gd fdhsh hdgj hfkjk kglgl</p>
+    </div>
+    </div>
+       
+</body>
+</html>
