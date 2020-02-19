@@ -24,22 +24,11 @@ body {
     padding:20px;
 }
 
-.column1 {
-    float:left;
-    width: 30%;
-    padding: 10px;
-    height: 300px; 
-}
-.column2 {
-    float: right;
-    width: 50%;
-    padding: 20px;
-    height: 300px; 
-}
 img {
     border-radius: 20%;
-    float:left;
     padding: 10px;
+    width: 500px;
+    height: 400px;
     
   }
   .editButton {

@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from eventApp import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -27,10 +26,12 @@ urlpatterns = [
     path('get-response/', views.get_response),
     path("", views.homee, name="login"),
     path("register/",views.register),
-    #path("listAllEvents/", views.list_all_events),
-    path("eventDetail/", views.event_detail),
+    path("listAll", views.list_all_events,  name="listAll"),
+    path(r'^eventDetail/(?P<eventId>\d+)/$', views.event_detail, name='eventDetail'),
+    path(r'^editEvent/(?P<eventId>\d+)/$', views.edit_event, name='editEvent'),
     path("listAllEvents", views.login_request),
-    path("logout_request", views.logout_request)
+    path("logout_request", views.logout_request),
+    #path(r'%s/saveEvent/$', views.saveEvent)
 ]
 
 if settings.DEBUG == True:

@@ -1,0 +1,33 @@
+{% load static %}
+<html lang="en">
+<title>Edit {{event.name}}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel='stylesheet' href="{% static 'css/editEvent.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+<!-- Header -->
+<header class="nameHeader" >
+   <h1> Edit {{ event.name }}</h1>
+</header>
+<div class="main">
+ <form class="login" method="POST" action='saveEvent'>
+      <label class="label" for="name">Event Name :</label><br/>
+      <input class="username"  name="name" type="text" align="center" value="{{event.name}}"><br/>
+      <label class="label" for="location">Location :</label><br/>
+      <input class="username" name="location" type="text" align="center"  value="{{event.location}}"><br/>
+      <label class="label" for="date">Date :</label><br/>
+      <input class="username" name="date" type="date" align="center"  value="{{event.date}}"><br/>
+      <label class="label" for="description">Description :</label><br/>
+      <textarea class="username" name="description" align="center" rows="6" >{{event.description}}</textarea><br/>
+      <label class="label" for="image">Select Image :</label><br/>
+      <input class="username" name="image"  align="center" type="file" accept="image/*" value="{{event.image.url}}"> 
+      <button class="submit"  type="submit" align="center">Save event </button>
+    </form>    
+</div> 
+</body>
+</html>
+

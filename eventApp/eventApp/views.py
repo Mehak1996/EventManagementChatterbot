@@ -1,11 +1,11 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from .Models.models import Testt
-
+from .Models.models import Event
+#from .models import Event
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
@@ -13,7 +13,7 @@ chatbot = ChatBot(
     'Mehak',
 )
 trainer = ChatterBotCorpusTrainer(chatbot.storage)
-trainer.train("/Users/mehakluthra/Documents/Event_Management_Chatterbot/eventApp/custom_corpus/mehak.yml")
+trainer.train("/Users/manpreetdhillon/Desktop/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
 
 # Train based on the english corpus
 
@@ -46,7 +46,7 @@ def home(request, template_name="home.html"):
 	return render_to_response(template_name, context)
 
 def homee(request):
-    obj = Testt.objects.get(id=1)
+    obj = Event.objects.get(id=1)
     context = {"object": obj}
     return render(request,'login.html',context)
    
@@ -56,7 +56,10 @@ def login_request(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
-        return render(request, 'listAllEvents.html')
+        return redirect('listAll')
+        #list_all_events(request);
+        #return render(request, 'listAllEvents.html')
+
     else:
         messages.error(request, "Invalid username or password.")
 
@@ -65,15 +68,25 @@ def register(request):
     return render(request, 'register.html')
 
 def list_all_events(request):
-    " list"
-    context = {"totalEvents": 6}
+    obj = Event.objects.all()
+    context = {"totalEvents": obj}
     return render(request, 'listAllEvents.html',context)
 
-def event_detail(request):
-    "detial"
-    return render(request, 'eventDetail.html')
+def event_detail(request,eventId):
+    obj = Event.objects.get(id=eventId)
+    context = {"event": obj}
+    return render(request, 'eventDetail.html',context)
 
 def logout_request(request):
-    "detial"
     logout(request)
-    return render(request, 'login.html')
+    return redirect('login')
+
+def edit_event(request,eventId):
+    obj = Event.objects.get(id=eventId)
+    context = {"event": obj}
+    return render(request, 'addEvent.html',context)
+
+def saveEvent(request):
+    name = request.POST.get('name')
+    location = request.POST.get('location')
+    date = request.POST.get('name')
