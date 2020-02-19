@@ -11,10 +11,20 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 chatbot = ChatBot(
     'Mehak',
+    trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
-trainer = ChatterBotCorpusTrainer(chatbot.storage)
-trainer.train("/Users/manpreetdhillon/Desktop/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
+chatbot.train("/Users/mehakluthra/Documents/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
 
+# chatbot = ChatBot(
+#     'Ron Obvious',
+#     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
+# )
+# # Train based on the english corpus
+# chatbot.train("chatterbot.corpus.english")
+# Train based on the english corpus
+
+#Already trained and it's supposed to be persistent
+#chatbot.train("chatterbot.corpus.english")
 # Train based on the english corpus
 
 #Already trained and it's supposed to be persistent
@@ -90,3 +100,7 @@ def saveEvent(request):
     name = request.POST.get('name')
     location = request.POST.get('location')
     date = request.POST.get('name')
+
+
+def floating_button(request):
+    return render(request, 'floatingButton.html')

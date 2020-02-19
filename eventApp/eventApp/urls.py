@@ -22,9 +22,10 @@ from django.conf import settings
 admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('chat/', views.home),
+    path('', views.floating_button),
+    path('chatbot/', views.home, name='chatbot'),
     path('get-response/', views.get_response),
-    path("", views.homee, name="login"),
+    path("login/", views.homee, name="login"),
     path("register/",views.register),
     path("listAll", views.list_all_events,  name="listAll"),
     path(r'^eventDetail/(?P<eventId>\d+)/$', views.event_detail, name='eventDetail'),
