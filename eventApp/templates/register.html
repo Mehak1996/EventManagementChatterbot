@@ -9,17 +9,17 @@
 
 <body>
   <div class="registerMain">
-    <p class="RegisterSign" align="center">Register</p>    
+    <p class="sign" align="center">Register</p>    
     <p class="registerInfo" align="center">Please fill in this form to register.</p>
-    <form class="register">
-      <input class="username " type="text" align="center" placeholder="Username" >
-      <input class="username " type="text" align="center" placeholder="First Name" >
-      <input class="username " type="text" align="center" placeholder="Last Name" >
-      <input class="username " type="text" align="center" placeholder="Email" >
-      <input class="password" type="text" align="center" placeholder="Admin">
-      <input class="password" type="password" align="center" placeholder="Password">
-      <input class="password" type="password" align="center" placeholder="Confirm Password">
-      <a class="submit" align="center">Register</a>
+    <form class="register" method="POST" action='registerUser'>
+    {% csrf_token %}
+      <input class="username " name="username" type="text" align="center" placeholder="Username" >
+      <input class="username " name="firstname" type="text" align="center" placeholder="First Name" >
+      <input class="username " name="lastname" type="text" align="center" placeholder="Last Name" >
+      <input class="username " name="email" type="text" align="center" placeholder="Email" >
+      <input class="password" name="password" type="password" align="center" placeholder="Password">
+      <input class="password" name="confirmPassword" type="password" align="center" placeholder="Confirm Password">
+      <button class="submit"  type="submit" align="center">Register</button>
     </form> 
     </div>     
 </body>

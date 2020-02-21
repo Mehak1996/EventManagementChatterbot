@@ -23,7 +23,7 @@ body {
 .registerMain {
         background-color: #FFFFFF;
         width: 450px;
-        height: 750px;
+        height: 650px;
         margin: 7em auto;
         border-radius: 1.5em;
         box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
@@ -31,13 +31,6 @@ body {
     
 .sign {
         padding-top: 40px;
-        color: #8C55AA;
-        font-family: 'Ubuntu', sans-serif;
-        font-weight: bold;
-        font-size: 23px;
-}
-.RegisterSign {
-        padding-top: 20px;
         color: #8C55AA;
         font-family: 'Ubuntu', sans-serif;
         font-weight: bold;

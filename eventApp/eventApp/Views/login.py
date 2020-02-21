@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 def login_request(request):
     if request.method == 'POST':
@@ -18,8 +19,12 @@ def login_request(request):
             return redirect('login')
 
 def register(request):
-    " register"
     return render(request, 'register.html')
+    
+def registerUser(request):
+    u = User.objects.create_user(username=request.POST.get('username'),first_name=request.POST.get('firstname'),last_name=request.POST.get('lastname'),email=request.POST.get('email'),password=request.POST.get('password'))
+    u.save();
+    return redirect('login');
 
 def logout_request(request):
     logout(request)
