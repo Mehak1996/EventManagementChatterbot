@@ -30,7 +30,7 @@ urlpatterns = [
     path('chatbot/', home.home, name='chatbot'),
     path('get-response/', chatterbotUtility.get_response),
     path("", home.homePage, name="login"),
-    path("register/",login.register),
+    path("register/",login.register, name="register"),
     path("register/registerUser",login.registerUser, name="registerUser"),
     path("listAll", events.list_all_events,  name="listAll"),
     path(r'^eventDetail/(?P<eventId>\d+)/$', events.event_detail, name='eventDetail'),

@@ -6,19 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Register</title>
 </head>
-
+<script>
+function hideError() {
+  var x = document.getElementById("error");
+  x.style.display = "none";
+}
+</script>
 <body>
   <div class="registerMain">
     <p class="sign" align="center">Register</p>    
     <p class="registerInfo" align="center">Please fill in this form to register.</p>
     <form class="register" method="POST" action='registerUser'>
     {% csrf_token %}
-      <input class="username " name="username" type="text" align="center" placeholder="Username" >
-      <input class="username " name="firstname" type="text" align="center" placeholder="First Name" >
-      <input class="username " name="lastname" type="text" align="center" placeholder="Last Name" >
-      <input class="username " name="email" type="text" align="center" placeholder="Email" >
-      <input class="password" name="password" type="password" align="center" placeholder="Password">
-      <input class="password" name="confirmPassword" type="password" align="center" placeholder="Confirm Password">
+      <input class="username" onkeypress="hideError()" name="username" type="text" align="center" placeholder="Username" >
+      <input class="username" onkeypress="hideError()" name="firstname" type="text" align="center" placeholder="First Name" >
+      <input class="username" onkeypress="hideError()" name="lastname" type="text" align="center" placeholder="Last Name" >
+      <input class="username" onkeypress="hideError()" name="email" type="text" align="center" placeholder="Email" >
+      <input class="password" onkeypress="hideError()" name="password" type="password" align="center" placeholder="Password">
+      <input class="password" onkeypress="hideError()" name="confirmPassword" type="password" align="center" placeholder="Confirm Password">
+      {% for message in messages %}
+      <div id="error" class="registerAlert">{{ message }}</div>
+      {% endfor %}
       <button class="submit"  type="submit" align="center">Register</button>
     </form> 
     </div>     

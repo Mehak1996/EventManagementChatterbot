@@ -23,7 +23,7 @@ body {
 .registerMain {
         background-color: #FFFFFF;
         width: 450px;
-        height: 650px;
+        height: 700px;
         margin: 7em auto;
         border-radius: 1.5em;
         box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
@@ -147,7 +147,16 @@ a {
         font-size: 16px;
         width: 350px;
 }
-
+.RegisterAlert {
+        
+        padding: 20px;
+        padding-top:10px;
+        text-align: center;
+        color: #d33939;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 16px;
+        width: 400px;
+}
     
 @media (max-width: 600px) {
         .registerMain, .main {
