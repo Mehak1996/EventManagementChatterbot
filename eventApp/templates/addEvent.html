@@ -1,6 +1,10 @@
 {% load static %}
 <html lang="en">
+{% if event.id == 0 %}
+<title>Add new event </title>
+{% else %}
 <title>Edit {{event.name}}</title>
+{% endif %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel='stylesheet' href="{% static 'css/editEvent.css' %}">
@@ -38,7 +42,12 @@ if (datefield.type!="date"){ //if browser doesn't support input type="date", ini
 <body>
 <!-- Header -->
 <header class="nameHeader" >
+{% if event.id == 0 %}
+<h1> Add new event</h1>
+{% else %}
 <h1> Edit {{ event.name }}</h1>
+{% endif %}
+
 </header>
 <div class="main">
 <form class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name location=event.location date=event.date description=event.description %}'> 

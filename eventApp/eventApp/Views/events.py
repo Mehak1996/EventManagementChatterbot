@@ -29,7 +29,12 @@ def saveEvent(request,eventId,name,location, date, description):
         format_str = '%m/%d/%Y' # The format
         datetime_obj = datetime.datetime.strptime(unformattedDate, format_str)
         e = Event(name=request.POST.get('name'),location=request.POST.get('location'),date=datetime_obj,description=request.POST.get('description'))
+        files = request.FILES["image"]
+        fs = FileSystemStorage()
+        fs.save(files.name,files)
+        e.image.name = files.name
         e.save();
+        
     # for edit
     elif eventId:
         obj = Event.objects.get(id=eventId)
@@ -40,11 +45,21 @@ def saveEvent(request,eventId,name,location, date, description):
         datetime_obj = datetime.datetime.strptime(date, format_str)
         obj.date = datetime_obj
         obj.description = request.POST.get('description')
-        if request.method == "GET":
-            files = request.FILES["image"]
-            fs = FileSystemStorage()
-            fs.save(files.name,files)
-            obj.image.name = files.name
+        # still to be fixed
+        #if request.method == "GET" or request.method == "POST" :
+        #    files = request.FILES["image"]
+        #    fs = FileSystemStorage()
+        #    fs.save(files.name,files)
+        #    obj.image.name = files.name
+        #else :
+        #    files = request.FILES["image"]
+        #    fs = FileSystemStorage()
+        #    fs.save(files.name,files)
+        #    obj.image.name = files.name
+        files = request.FILES["image"]
+        fs = FileSystemStorage()
+        fs.save(files.name,files)
+        obj.image.name = files.name
         obj.save()
     
     return redirect('listAll')
