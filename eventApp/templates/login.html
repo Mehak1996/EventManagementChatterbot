@@ -6,14 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login</title>
 </head>
-
+<script>
+function hideError() {
+  var x = document.getElementById("error");
+  x.style.display = "none";
+}
+</script>
 <body>
+
   <div class="main">
     <p class="sign" align="center">Login</p>
     <form class="login" method="POST" action='listAllEvents'>
       {% csrf_token %}
-      <input class="username"  name="username" type="text" align="center" placeholder="Username">
-      <input class="password" name="password" type="password" align="center" placeholder="Password">
+      <input id="user" class="username" onkeypress="hideError()" name="username" type="text" align="center" placeholder="Username">
+      <input id="pass" class="password" onkeypress="hideError()" name="password" type="password" align="center" placeholder="Password">
+      {% for message in messages %}
+      <div id="error" class="alert">{{ message }}</div>
+      {% endfor %}
       <button class="submit"  type="submit" align="center">Sign in</button>
     </form>     
     </div>  

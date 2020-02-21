@@ -76,7 +76,7 @@ form.login {
     }
     
 .password {
-            width: 76%;
+width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
     font-size: 14px;
@@ -127,6 +127,17 @@ a {
         color: #E1BEE7;
         text-decoration: none
 }
+.alert {
+        
+        padding: 20px;
+        padding-top:10px;
+        text-align: center;
+        color: #d33939;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 16px;
+        width: 350px;
+}
+
     
 @media (max-width: 600px) {
         .registerMain, .main {
