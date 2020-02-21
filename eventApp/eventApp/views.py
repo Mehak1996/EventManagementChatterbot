@@ -9,48 +9,7 @@ from .Models.models import Event
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from django.core.files.storage import FileSystemStorage
-
-chatbot = ChatBot(
-    'Mehak',
-    trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
-)
-chatbot.train("/Users/manpreetdhillon/Desktop/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
-
-# chatbot = ChatBot(
-#     'Ron Obvious',
-#     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
-# )
-# # Train based on the english corpus
-# chatbot.train("chatterbot.corpus.english")
-# Train based on the english corpus
-
-#Already trained and it's supposed to be persistent
-#chatbot.train("chatterbot.corpus.english")
-# Train based on the english corpus
-
-#Already trained and it's supposed to be persistent
-#chatbot.train("chatterbot.corpus.english")
-
-@csrf_exempt
-def get_response(request):
-	response = {'status': None}
-
-	if request.method == 'POST':
-		data = json.loads(request.body.decode('utf-8'))
-		message = data['message']
-
-		chat_response = chatbot.get_response(message).text
-		response['message'] = {'text': chat_response, 'user': False, 'chat_bot': True}
-		response['status'] = 'ok'
-
-	else:
-		response['error'] = 'no post data found'
-
-	return HttpResponse(
-		json.dumps(response),
-			content_type="application/json"
-		)
-
+from .Views import chatterbotUtility
 
 def home(request, template_name="home.html"):
 	context = {'title': 'Chatbot Version 1.0'}
@@ -97,12 +56,14 @@ def edit_event(request,eventId):
     return render(request, 'addEvent.html',context)
 
 def saveEvent(request,eventId,name,location, date, description):
+    # for add 
     if eventId == '0':
         unformattedDate = request.POST.get('date')
         format_str = '%m/%d/%Y' # The format
         datetime_obj = datetime.datetime.strptime(unformattedDate, format_str)
         e = Event(name=request.POST.get('name'),location=request.POST.get('location'),date=datetime_obj,description=request.POST.get('description'))
         e.save();
+    # for edit
     elif eventId:
         obj = Event.objects.get(id=eventId)
         obj.name = request.POST.get('name')
@@ -118,6 +79,7 @@ def saveEvent(request,eventId,name,location, date, description):
             fs.save(files.name,files)
             obj.image.name = files.name
         obj.save()
+    
     return redirect('listAll')
 
 
