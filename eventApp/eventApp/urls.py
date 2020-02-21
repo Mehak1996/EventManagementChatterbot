@@ -19,23 +19,26 @@ from eventApp import views
 from django.conf.urls.static import static
 from django.conf import settings
 from .Views import chatterbotUtility
+from .Views import login
+from .Views import events
+from .Views import home
 
 admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('floatingbutton/', views.floating_button),
-    path('chatbot/', views.home, name='chatbot'),
+    path('floatingbutton/', home.floating_button),
+    path('chatbot/', home.home, name='chatbot'),
     path('get-response/', chatterbotUtility.get_response),
-    path("", views.homePage, name="login"),
-    path("register/",views.register),
-    path("listAll", views.list_all_events,  name="listAll"),
-    path(r'^eventDetail/(?P<eventId>\d+)/$', views.event_detail, name='eventDetail'),
-    path(r'^editEvent/(?P<eventId>\d+)/$', views.edit_event, name='editEvent'),
-    path(r'^editEvent/(?P<eventId>\d+)/deleteEvent/$', views.deleteEvent, name='deleteEvent'),
-    path("listAllEvents", views.login_request),
-    path("logout_request", views.logout_request),
-    path("addEvent/", views.add_Event, name='addEvent'),
-    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<location>\w+)/(?P<date>\w+)/(?P<description>\w+)/saveEvent/$', views.saveEvent, name="saveEvent")
+    path("", home.homePage, name="login"),
+    path("register/",login.register),
+    path("listAll", events.list_all_events,  name="listAll"),
+    path(r'^eventDetail/(?P<eventId>\d+)/$', events.event_detail, name='eventDetail'),
+    path(r'^editEvent/(?P<eventId>\d+)/$', events.edit_event, name='editEvent'),
+    path(r'^editEvent/(?P<eventId>\d+)/deleteEvent/$', events.deleteEvent, name='deleteEvent'),
+    path("listAllEvents", login.login_request),
+    path("logout_request", login.logout_request),
+    path("addEvent/", events.add_Event, name='addEvent'),
+    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<location>\w+)/(?P<date>\w+)/(?P<description>\w+)/saveEvent/$', events.saveEvent, name="saveEvent")
 ]
 
 if settings.DEBUG == True:

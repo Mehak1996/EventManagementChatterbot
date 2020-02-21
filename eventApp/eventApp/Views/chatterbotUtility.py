@@ -9,10 +9,10 @@ chatbot = ChatBot(
     'Mehak',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='mysql://root:mehak1996@localhost/EventApp'
+    database_uri='mysql://root:man1995root@localhost/mydatabase'
 
 )
-chatbot.train("/Users/mehakluthra/Documents/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
+chatbot.train("/Users/manpreetdhillon/Desktop/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
 
 @csrf_exempt
 def get_response(request):
