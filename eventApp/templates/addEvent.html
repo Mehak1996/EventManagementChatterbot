@@ -4,27 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel='stylesheet' href="{% static 'css/editEvent.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+<script type="text/javascript">
+    var datefield=document.createElement("input")
+    datefield.setAttribute("type", "date")
+    if (datefield.type!="date"){ //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n') 
+    }
+</script>
+ 
+<script>
+if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
+    jQuery(function($){ //on document.ready
+        $('#date').datepicker();
+    })
+}
+</script>
+<script>
+    $('input[type="file"]').change(function(e){
+            var fileName = e.target.files[0].name;
+            alert('The file "' + fileName +  '" has been selected.');
+        });
+    });
+    </script>
+</head>
 
 <body>
 <!-- Header -->
 <header class="nameHeader" >
-   <h1> Edit {{ event.name }}</h1>
+<h1> Edit {{ event.name }}</h1>
 </header>
 <div class="main">
- <form class="login" method="POST" action='saveEvent'>
+ <form class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name location=event.location date=event.date description=event.description %}'>
+ {% csrf_token %}
       <label class="label" for="name">Event Name :</label><br/>
       <input class="username"  name="name" type="text" align="center" value="{{event.name}}"><br/>
       <label class="label" for="location">Location :</label><br/>
       <input class="username" name="location" type="text" align="center"  value="{{event.location}}"><br/>
       <label class="label" for="date">Date :</label><br/>
-      <input class="username" name="date" type="date" align="center"  value="{{event.date}}"><br/>
+      <input class="username" id="date" name="date" type="date" align="center"  value="{{date}}"><br/>
       <label class="label" for="description">Description :</label><br/>
       <textarea class="username" name="description" align="center" rows="6" >{{event.description}}</textarea><br/>
       <label class="label" for="image">Select Image :</label><br/>
-      <input class="username" name="image"  align="center" type="file" accept="image/*" value="{{event.image.url}}"> 
+      <input class="username" name="image"  align="center" type="file" accept="image/*"> 
       <button class="submit"  type="submit" align="center">Save event </button>
     </form>    
 </div> 

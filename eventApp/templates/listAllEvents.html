@@ -1,17 +1,17 @@
 {% load static %}
  <html>
-<head>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-  <link rel='stylesheet' href="{% static 'css/events.css' %}">
+  <link rel='stylesheet' href="/static/css/events.css">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  <title>Welcome</title>
-</head>
-
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Welcome</title>
 <body>
     <header class="nameHeader" >
         <h1 >Welcome {{request.user.username}}  </h1>
-        <div class="logout" onclick="location.href='logout_request';"><p>Logout</p></div>
+        <button class="topButton" onclick="location.href='';" style="vertical-align:middle;">Add new Event</button>
+        <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;">Logout</button>
     </header>
 
     <div class="row">
@@ -19,7 +19,7 @@
     <div class="column" id={{ event.id}}>
         <img src={{ event.image.url}} alt="Avatar" >
         <button class="editButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
-        <button class="deleteButton" style="vertical-align:middle; float:right">Delete  <i class="fas fa-trash"></i> </button>
+        <button class="deleteButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete  <i class="fas fa-trash"></i> </button>
         <div onclick="location.href='{% url 'eventDetail' event.id %}';"><h2>{{ event.name }}</h2></div>
         <p class="venue"><i class="fas fa-calendar"></i>  {{ event.date }} at {{ event.location}} </p>
         <p> {{ event.description}} </p>

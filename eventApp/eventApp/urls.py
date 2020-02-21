@@ -22,17 +22,19 @@ from django.conf import settings
 admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.floating_button),
+    path('floatingbutton/', views.floating_button),
     path('chatbot/', views.home, name='chatbot'),
     path('get-response/', views.get_response),
-    path("login/", views.homee, name="login"),
+    path("", views.homee, name="login"),
     path("register/",views.register),
     path("listAll", views.list_all_events,  name="listAll"),
     path(r'^eventDetail/(?P<eventId>\d+)/$', views.event_detail, name='eventDetail'),
     path(r'^editEvent/(?P<eventId>\d+)/$', views.edit_event, name='editEvent'),
+    path(r'^editEvent/(?P<eventId>\d+)/deleteEvent/$', views.deleteEvent, name='deleteEvent'),
     path("listAllEvents", views.login_request),
     path("logout_request", views.logout_request),
-    #path(r'%s/saveEvent/$', views.saveEvent)
+    #path("addEvent/", views.add_Event, name='addEvent'),
+    path(r'^eventDetail/(?P<eventId>\d+)(?P<name>\w+)/(?P<location>\w+)/(?P<date>\w+)/(?P<description>\w+)/saveEvent/$', views.saveEvent, name="saveEvent")
 ]
 
 if settings.DEBUG == True:

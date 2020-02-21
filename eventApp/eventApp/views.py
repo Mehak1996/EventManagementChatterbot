@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import json
+import datetime 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -8,12 +9,13 @@ from .Models.models import Event
 #from .models import Event
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
+from django.core.files.storage import FileSystemStorage
 
 chatbot = ChatBot(
     'Mehak',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
-chatbot.train("/Users/mehakluthra/Documents/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
+chatbot.train("/Users/manpreetdhillon/Desktop/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml")
 
 # chatbot = ChatBot(
 #     'Ron Obvious',
@@ -93,14 +95,31 @@ def logout_request(request):
 
 def edit_event(request,eventId):
     obj = Event.objects.get(id=eventId)
-    context = {"event": obj}
+    formattedDate = obj.date.strftime("%m/%d/%Y")
+    context = {"event": obj, "date": formattedDate}
     return render(request, 'addEvent.html',context)
 
-def saveEvent(request):
-    name = request.POST.get('name')
-    location = request.POST.get('location')
-    date = request.POST.get('name')
+def saveEvent(request,eventId,name,location, date, description):
+    if eventId:
+        obj = Event.objects.get(id=eventId)
+        obj.name = request.POST.get('name')
+        obj.location = request.POST.get('location')
+        date = request.POST.get('date')
+        format_str = '%m/%d/%Y' # The format
+        datetime_obj = datetime.datetime.strptime(date, format_str)
+        obj.date = datetime_obj
+        obj.description = request.POST.get('description')
+        if request.method == "POST":
+            files = request.FILES["image"]
+            fs = FileSystemStorage()
+            fs.save(files.name,files)
+            obj.image.name = files.name
+        obj.save()
+    return redirect('listAll')
 
+def deleteEvent(request,eventId):
+    Event.objects.get(id=eventId).delete()
+    return redirect('listAll')
 
 def floating_button(request):
     return render(request, 'floatingButton.html')

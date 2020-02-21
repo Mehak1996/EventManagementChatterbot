@@ -7,15 +7,11 @@
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-    .fa-anchor,.fa-coffee {font-size:200px}
-    </style>
+
 <body>
 <!-- Header -->
 <header class="nameHeader" >
-   <button class="button" style="vertical-align:middle; float:right">Register</button>
+  <button class="button" style="vertical-align:middle; float:right">Register</button>
    <h1> {{ event.name }}</h1>
 </header>
 <table>
@@ -27,7 +23,7 @@
 <p>{{ event.description}}</p>
 <p ><i class="fas fa-calendar"></i> {{ event.date }} at {{ event.location}} </p>
 <button class="editButton" style="vertical-align:middle;" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
-<button class="deleteButton" style="vertical-align:middle;">Delete <i class="fas fa-trash"></i></button>     
+<button class="deleteButton" style="vertical-align:middle;" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete <i class="fas fa-trash"></i></button>     
 </td>
 </tr>
 </table>

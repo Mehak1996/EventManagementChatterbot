@@ -2,10 +2,7 @@ body {
     background-color: #F3EBF6;
     font-family: 'Ubuntu', sans-serif;
 }
-* {
-  box-sizing: border-box;
-}
-  
+
   /* Create two equal columns that floats next to each other */
   .column {
     float: left;
@@ -39,7 +36,7 @@ body {
     cursor: pointer;
     margin: 5px;
   }
-  .button {
+  .topButton {
     display: inline-block;
     border-radius: 4px;
     background-color: #000000;
@@ -48,7 +45,7 @@ body {
     text-align: center;
     font-size: 14px;
     padding: 15px;
-    width: 100px;
+    width: 200px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;

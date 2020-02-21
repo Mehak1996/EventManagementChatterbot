@@ -51,8 +51,6 @@ form.login {
         padding-top: 40px;
     }
     
-
-    
 .username:focus{
         border: 2px solid rgba(0, 0, 0, 0.18) !important;
         
