@@ -41,7 +41,7 @@ if (datefield.type!="date"){ //if browser doesn't support input type="date", ini
 <h1> Edit {{ event.name }}</h1>
 </header>
 <div class="main">
- <form class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name location=event.location date=event.date description=event.description %}'>
+<form class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name location=event.location date=event.date description=event.description %}'> 
  {% csrf_token %}
       <label class="label" for="name">Event Name :</label><br/>
       <input class="username"  name="name" type="text" align="center" value="{{event.name}}"><br/>
@@ -58,4 +58,3 @@ if (datefield.type!="date"){ //if browser doesn't support input type="date", ini
 </div> 
 </body>
 </html>
-

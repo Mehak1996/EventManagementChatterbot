@@ -6,7 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .Models.models import Event
-#from .models import Event
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from django.core.files.storage import FileSystemStorage
@@ -57,10 +56,8 @@ def home(request, template_name="home.html"):
 	context = {'title': 'Chatbot Version 1.0'}
 	return render_to_response(template_name, context)
 
-def homee(request):
-    obj = Event.objects.get(id=1)
-    context = {"object": obj}
-    return render(request,'login.html',context)
+def homePage(request):
+    return render(request,'login.html')
    
 def login_request(request):
     username = request.POST.get('username')
@@ -100,7 +97,13 @@ def edit_event(request,eventId):
     return render(request, 'addEvent.html',context)
 
 def saveEvent(request,eventId,name,location, date, description):
-    if eventId:
+    if eventId == '0':
+        unformattedDate = request.POST.get('date')
+        format_str = '%m/%d/%Y' # The format
+        datetime_obj = datetime.datetime.strptime(unformattedDate, format_str)
+        e = Event(name=request.POST.get('name'),location=request.POST.get('location'),date=datetime_obj,description=request.POST.get('description'))
+        e.save();
+    elif eventId:
         obj = Event.objects.get(id=eventId)
         obj.name = request.POST.get('name')
         obj.location = request.POST.get('location')
@@ -109,7 +112,7 @@ def saveEvent(request,eventId,name,location, date, description):
         datetime_obj = datetime.datetime.strptime(date, format_str)
         obj.date = datetime_obj
         obj.description = request.POST.get('description')
-        if request.method == "POST":
+        if request.method == "GET":
             files = request.FILES["image"]
             fs = FileSystemStorage()
             fs.save(files.name,files)
@@ -117,9 +120,14 @@ def saveEvent(request,eventId,name,location, date, description):
         obj.save()
     return redirect('listAll')
 
+
 def deleteEvent(request,eventId):
     Event.objects.get(id=eventId).delete()
     return redirect('listAll')
+
+def add_Event(request):
+    context = {"event": {"id":0,"name":" ","date":" ","description":" ","location":" "}, "date": " "}
+    return render(request, 'addEvent.html',context)
 
 def floating_button(request):
     return render(request, 'floatingButton.html')
