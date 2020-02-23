@@ -10,16 +10,39 @@
 <body>
     <header class="nameHeader" >
         <h1 >Welcome {{request.user.username}}  </h1>
+        <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;float:right">Logout</button>      
+        {% if request.user.is_superuser %}
         <button class="topButton" onclick="location.href='addEvent';" style="vertical-align:middle;float:right">Add new Event</button>
-        <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;float:right">Logout</button>
-    </header>
-
+         {% else %}
+            {% if registeredList %}
+            <button class="topButton" onclick="location.href='listAll';" style="vertical-align:middle;float:right">Show all Events</button>
+            {% else %}
+             <button class="topButton" onclick="location.href='listAllRegisteredEvents';" style="vertical-align:middle;float:right">Show all registered Events</button>
+           {% endif %}
+        {% endif %}  
+         </header>
+         
+{% if registeredList %}
+<h2 class ="subheader" >  List of your registered events </h2>
+{% else %}
+<h2 class ="subheader" >  List of all the events </h2>
+{% endif %}
     <div class="row">
     {% for event in totalEvents %}
     <div class="column" id={{ event.id}}>
         <img src={{ event.image.url}} alt="Avatar" >
+        {% if request.user.is_superuser %}
         <button class="editButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
         <button class="deleteButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete  <i class="fas fa-trash"></i> </button>
+        {% else %}
+        {% if registeredList %}
+        <p class="greenmessage" style="vertical-align:middle; float:right" >Already Registered  </p>
+        {% elif event.id in registered %}
+        <p class="greenmessage" style="vertical-align:middle; float:right" >Already Registered  </p>
+        {% else %}
+        <button class="deleteButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'registerEvent' event.id %}';">Register <i class="fas fa-check-square"></i> </button>
+        {% endif %}
+        {% endif %}
         <div onclick="location.href='{% url 'eventDetail' event.id %}';"><h2>{{ event.name }}</h2></div>
         <p class="venue"><i class="fas fa-calendar"></i>  {{ event.date }} at {{ event.location}} </p>
         <p> {{ event.description}} </p>

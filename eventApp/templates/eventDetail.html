@@ -11,8 +11,7 @@
 <body>
 <!-- Header -->
 <header class="nameHeader" >
-  <button class="button" style="vertical-align:middle; float:right">Register</button>
-   <h1> {{ event.name }}</h1>
+  <h1> {{ event.name }}</h1>
 </header>
 <table>
 <tr>
@@ -22,8 +21,16 @@
 <td valign="top" style="padding-top:40px"> 
 <p>{{ event.description}}</p>
 <p ><i class="fas fa-calendar"></i> {{ event.date }} at {{ event.location}} </p>
+{% if request.user.is_superuser %}
 <button class="editButton" style="vertical-align:middle;" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
 <button class="deleteButton" style="vertical-align:middle;" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete <i class="fas fa-trash"></i></button>     
+{% else %}
+{% if registered %}
+<p class="greenmessage" style="vertical-align:middle;" >Already Registered  </p>
+{% else%}
+<button class="deleteButton" onclick="location.href='{% url 'registerEvent' event.id %}';" style="vertical-align:middle;">Register <i class="fas fa-check-square"></i></button>
+{% endif %}
+{% endif %}
 </td>
 </tr>
 </table>

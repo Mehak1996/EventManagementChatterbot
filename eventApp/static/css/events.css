@@ -86,5 +86,19 @@ body {
     height: 80px;
     padding:20px;
 }
+.subheader{
+  text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+  color: rgb(193, 142, 202);
+  margin-left: 7px;
+}
+.greenmessage{
+  display: inline-block;
+  border-radius: 4px;
+  color: #2bc766;
+  text-align: center;
+  font-size: 16px;
+  padding: 5px;
+  width: 150px;
+}
 
   

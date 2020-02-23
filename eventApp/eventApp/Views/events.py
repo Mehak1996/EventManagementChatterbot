@@ -3,17 +3,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json
 import datetime 
 from django.contrib import messages
-from eventApp.Models.models import Event
+from eventApp.Models.models import Event,UserEventRegisteration
 from django.core.files.storage import FileSystemStorage
 
 def list_all_events(request):
     obj = Event.objects.all()
-    context = {"totalEvents": obj}
+    registeredObj = UserEventRegisteration.objects.all().filter(userId_id=request.user.id)
+    registeredByUser= []
+    for each in registeredObj:
+            registeredByUser.append(each.eventID_id)
+    context = {"totalEvents": obj,"registered":registeredByUser}
     return render(request, 'listAllEvents.html',context)
 
 def event_detail(request,eventId):
     obj = Event.objects.get(id=eventId)
-    context = {"event": obj}
+    registeredObj = UserEventRegisteration.objects.all().filter(userId_id=request.user.id,eventID_id= eventId)
+    if registeredObj:
+        setTo = True
+    else:
+        setTo = False
+    context = {"event": obj,"registered":setTo}
     return render(request, 'eventDetail.html',context)
 
 def edit_event(request,eventId):
@@ -72,3 +81,16 @@ def deleteEvent(request,eventId):
 def add_Event(request):
     context = {"event": {"id":0,"name":" ","date":" ","description":" ","location":" "}, "date": " "}
     return render(request, 'addEvent.html',context)
+
+def registerEvent(request,eventId):
+    e = UserEventRegisteration(userId_id=request.user.id,eventID_id=eventId)
+    e.save();
+    return redirect('listAll')
+
+def listAllRegisteredEvents(request):
+    obj = UserEventRegisteration.objects.all().filter(userId_id=request.user.id)
+    eventObj=[]
+    for eachEvent in obj:
+        eventObj.append(Event.objects.get(id=eachEvent.eventID_id))
+    context = {"totalEvents": eventObj, "registeredList":True}
+    return render(request, 'listAllEvents.html',context)
