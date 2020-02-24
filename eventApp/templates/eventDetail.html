@@ -19,8 +19,9 @@
 <img src={{ event.image.url }} alt="Avatar" style="width:500px;height:400px;">
 </td>
 <td valign="top" style="padding-top:40px"> 
+<p> Event type : {{ event.eventType}} </p>
 <p>{{ event.description}}</p>
-<p ><i class="fas fa-calendar"></i> {{ event.date }} at {{ event.location}} </p>
+<p ><i class="fas fa-calendar"></i> {{ event.date }},{{ event.time }} at {{ event.address}},{{ event.city}} </p>
 {% if request.user.is_superuser %}
 <button class="editButton" style="vertical-align:middle;" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
 <button class="deleteButton" style="vertical-align:middle;" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete <i class="fas fa-trash"></i></button>     

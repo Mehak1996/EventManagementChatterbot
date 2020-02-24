@@ -7,12 +7,21 @@
 {% endif %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
 <link rel='stylesheet' href="{% static 'css/editEvent.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<!-- timepicker added -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
-<head>
+<script>
+//loading 1st versios of jquery 
+var $i = jQuery.noConflict();
+</script> 
+
 <script type="text/javascript">
     var datefield=document.createElement("input")
     datefield.setAttribute("type", "date")
@@ -22,21 +31,25 @@
         document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n') 
     }
 </script>
- 
+
+ <script>
+//loading 2nd versios of jquery 
+var $j = jQuery.noConflict();
+</script> 
+
 <script>
+//rendering datepicker
 if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
-    jQuery(function($){ //on document.ready
-        $('#date').datepicker();
+    jQuery(function($j){ //on document.ready
+        $j('#date').datepicker();
     })
 }
+//rendering timepicker
+$i(function() {
+	$i('#time').timepicker({timeFormat: 'H:mm ',
+    interval: 30,startTime: '1:00',});
+});
 </script>
-<script>
-    $('input[type="file"]').change(function(e){
-            var fileName = e.target.files[0].name;
-            alert('The file "' + fileName +  '" has been selected.');
-        });
-    });
-    </script>
 </head>
 
 <body>
@@ -47,15 +60,28 @@ if (datefield.type!="date"){ //if browser doesn't support input type="date", ini
 {% else %}
 <h1> Edit {{ event.name }}</h1>
 {% endif %}
-
 </header>
 <div class="main">
-<form class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name location=event.location date=event.date description=event.description %}'> 
+<form id="loginform" class="login" method="POST"  enctype="multipart/form-data" action='{% url 'saveEvent' eventId=event.id name=event.name address=event.address date=event.date description=event.description city=event.city time=event.time eventType=event.eventType %}'> 
  {% csrf_token %}
       <label class="label" for="name">Event Name :</label><br/>
       <input class="username"  name="name" type="text" align="center" value="{{event.name}}"><br/>
-      <label class="label" for="location">Location :</label><br/>
-      <input class="username" name="location" type="text" align="center"  value="{{event.location}}"><br/>
+      <label class="label" for="eventType">Event Type :</label><br/>
+      <select class="select" id="eventType" name="eventType"  form="loginform" align="center">
+        <option value="Music & Dance" {% if event.eventType == "Music & Dance" %} selected {% endif %}>Music & Dance</option>
+        <option value="Adventure & Sports" {% if event.eventType == "Adventure & Sports" %} selected {% endif %}>Adventure & Sports</option>
+        <option value="Workshops" {% if event.eventType == "Workshops" %} selected {% endif %}>Workshops</option>
+        <option value="Comedy Show" {% if event.eventType == "Comedy Show" %} selected {% endif %}>Comedy Show</option>
+        <option value="Drama" {% if event.eventType == "Drama" %} selected {% endif %}>Drama</option>
+        <option value="Exhibitions" {% if event.eventType == "Exhibitions" %} selected {% endif %}>Exhibitions</option>
+        <option value="Others" {% if event.eventType == "Others" %} selected {% endif %}>Others</option>
+      </select><br/>
+      <label class="label" for="address">Location :</label><br/>
+      <input class="username" name="address" type="text" align="center"  value="{{event.address}}"><br/>
+      <label class="label" for="city">City :</label><br/>
+      <input class="username" name="city" type="text" align="center"  value="{{event.city}}"><br/>
+      <label class="label" for="time">Time :</label><br/>
+      <input class="username" id="time" name="time" type="text" align="center"  value="{{event.time}}"><br/>
       <label class="label" for="date">Date :</label><br/>
       <input class="username" id="date" name="date" type="date" align="center"  value="{{date}}"><br/>
       <label class="label" for="description">Description :</label><br/>

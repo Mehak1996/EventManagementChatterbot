@@ -44,7 +44,8 @@
         {% endif %}
         {% endif %}
         <div onclick="location.href='{% url 'eventDetail' event.id %}';"><h2>{{ event.name }}</h2></div>
-        <p class="venue"><i class="fas fa-calendar"></i>  {{ event.date }} at {{ event.location}} </p>
+        <p class="venue"><i class="fas fa-calendar"></i>  {{ event.date }},{{ event.time }} at {{ event.address}},{{ event.city}} </p>
+        <p> Event type : {{ event.eventType}} </p>
         <p> {{ event.description}} </p>
     </div>
     <hr class="rounded">

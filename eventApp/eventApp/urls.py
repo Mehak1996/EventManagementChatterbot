@@ -41,7 +41,7 @@ urlpatterns = [
     path("listAllEvents", login.login_request),
     path("logout_request", login.logout_request),
     path("addEvent/", events.add_Event, name='addEvent'),
-    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<location>\w+)/(?P<date>\w+)/(?P<description>\w+)/saveEvent/$', events.saveEvent, name="saveEvent")
+    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<address>\w+)/(?P<date>\w+)/(?P<description>\w+)/(?P<city>\w+)/(?P<time>\w+)/(?P<eventType>\w+)/saveEvent/$', events.saveEvent, name="saveEvent")
 ]
 
 if settings.DEBUG == True:
