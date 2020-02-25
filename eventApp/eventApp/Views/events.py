@@ -54,7 +54,12 @@ def saveEvent(request,eventId,name,address, date, description,city,time,eventTyp
         obj.name = request.POST.get('name')
         obj.address = request.POST.get('address')
         obj.city = request.POST.get('city')
-        obj.time = request.POST.get('time')
+        time = request.POST.get('time')
+        #formatting time
+        if 'p.m.' in time:
+            obj.time = str(int(time.split(" ")[0])+12)+":00"
+        elif 'a.m.' in time:
+            obj.time = str(int(time.split(" ")[0]))+":00"
         obj.eventType = request.POST.get('eventType')
         date = request.POST.get('date')
         format_str = '%m/%d/%Y' # The format
