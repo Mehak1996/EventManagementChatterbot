@@ -32,6 +32,26 @@ def edit_event(request,eventId):
     context = {"event": obj, "date": formattedDate}
     return render(request, 'addEvent.html',context)
 
+def formatTime(time):
+    t= time.split(" ")[0]
+    if 'p.m.' in time :
+        if ':' in time.split(" ")[0] :
+            timepart1 = int(t.split(":")[0])+12
+            if timepart1 == 24:
+                formattedtime =  "00:"+(t.split(":")[1])
+            else: 
+                formattedtime = str(timepart1)+ ":"+(t.split(":")[1])
+        else:
+            formattedtime = str(int(time.split(" ")[0])+12)+":00"
+    elif 'a.m.' in time:
+        if ':' in time.split(" ")[0] :
+             formattedtime = str(int(t.split(":")[0]))+":"+(t.split(":")[1])
+        else:
+            formattedtime = str(int(time.split(" ")[0]))+":00"
+    else:
+        formattedtime = time
+    return formattedtime
+
 def saveEvent(request,eventId,name,address, date, description,city,time,eventType):
     # for add 
     if eventId == '0':
@@ -56,10 +76,7 @@ def saveEvent(request,eventId,name,address, date, description,city,time,eventTyp
         obj.city = request.POST.get('city')
         time = request.POST.get('time')
         #formatting time
-        if 'p.m.' in time:
-            obj.time = str(int(time.split(" ")[0])+12)+":00"
-        elif 'a.m.' in time:
-            obj.time = str(int(time.split(" ")[0]))+":00"
+        obj.time = formatTime(time)
         obj.eventType = request.POST.get('eventType')
         date = request.POST.get('date')
         format_str = '%m/%d/%Y' # The format
