@@ -48,11 +48,19 @@ def get_response(request):
 		)
 
 def edit_converstaions(obj,objStatus):
-	print('inside Edit conversations')
-
+	print('inside Edit conversations')   
+	
 	if (objStatus['address'] == 'Mod') or (objStatus['city'] == 'Mod'):
-		edit_dialog_event_location (obj.name, obj.city, obj.address)
-
+		edit_dialog_event_location (obj)
+	if (objStatus['eventDate'] == 'Mod') :
+		edit_dialog_event_date (obj)
+	if (objStatus['eventType'] == 'Mod') :
+		edit_dialog_event_type (obj)
+	if (objStatus['eventTime'] == 'Mod'):
+		edit_dialog_event_time (obj)
+	if (objStatus['city'] == 'Mod'):
+		edit_dialog_event_city (obj)
+	edit_dialog_event_description(obj)
 
 def formulate_conversations(obj):
 	print('inside create conversations')
@@ -105,30 +113,49 @@ def create_dialog_event_description(name, city, address, strDate, time, eventTyp
 		quesLocationType = dialogs['description'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansEventDescription )
 
-
-def edit_dialog_event_location(name,city,address):
-	quesLocationType1 = dialogs['location']['ques1'] + ' ' + name + ' ? '
-	oldResponse = chatbot.get_response(quesLocationType1)
+def edit_dialog_event_location(obj):
+	quesLocationType = dialogs['location']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesLocationType)
 	remove_statement(oldResponse)
 		
-	create_dialog_event_location (name, city, address)
+	create_dialog_event_location (obj.name, obj.city, obj.address)
 
-def edit_dialog_event_date():
-	print('edit event date')
+def edit_dialog_event_date(obj):
+	quesDateType = dialogs['date']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesDateType)
+	remove_statement(oldResponse)
 
-def edit_dialog_event_type():
-	print('edit event type')
+	create_dialog_event_date(obj.name, obj.date)
 
-def edit_dialog_event_time():
-	print('edit event time')
+def edit_dialog_event_type(obj):
+	quesEventType = dialogs['type']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesEventType)
+	remove_statement(oldResponse)
+		
+	create_dialog_event_type (obj.name, obj.eventType)
 
-def edit_dialog_event_city():
-	print('edit event time')
+def edit_dialog_event_time(obj):
+	quesEventTime = dialogs['time']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesEventTime)
+	remove_statement(oldResponse)
+		
+	create_dialog_event_time (obj.name, obj.time)
 
-def edit_dialog_event_description():
-	print('edit event time')
+def edit_dialog_event_city(obj):
+	quesEventCity = dialogs['city']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesEventCity)
+	remove_statement(oldResponse)
+		
+	create_dialog_event_city (obj.name, obj.city)
+
+def edit_dialog_event_description(obj):
+	quesEventDesc = dialogs['description']['ques1'] + ' ' + obj.name + ' ? '
+	oldResponse = chatbot.get_response(quesEventDesc)
+	remove_statement(oldResponse)
+		
+	create_dialog_event_description (obj.name, obj.city, obj.address, obj.date, obj.time, obj.eventType, obj.description)
 	
-def train_chatbot_with_question_answer(question,answer):
+def train_chatbot_with_question_answer(question, answer):
 	chatbot.read_only = False
 	trainer.train([question,answer])
 	chatbot.read_only = True
