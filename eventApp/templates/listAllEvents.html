@@ -2,12 +2,27 @@
  <html>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel='stylesheet' href="/static/css/events.css">
+  <link rel='stylesheet' href="/static/css/message.css">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Welcome</title>
-<body>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("sucessSnackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+
+<body onload="myFunction()">
+{% if messages %}
+{% for message in messages %}
+<div id="sucessSnackbar">{{ message }}</div>
+{% endfor %}
+{% endif %}
     <header class="nameHeader" >
         <h1 >Welcome {{request.user.username}}  </h1>
         <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;float:right">Logout</button>      
@@ -21,7 +36,7 @@
            {% endif %}
         {% endif %}  
          </header>
-         
+
 {% if registeredList %}
 <h2 class ="subheader" >  List of your registered events </h2>
 {% else %}

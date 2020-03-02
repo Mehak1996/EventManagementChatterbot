@@ -1,9 +1,10 @@
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 import datetime 
 from django.contrib import messages
 from eventApp.Models.models import Event,UserEventRegisteration
+from eventApp.Views import Observer
 from django.core.files.storage import FileSystemStorage
 
 def list_all_events(request):
@@ -55,6 +56,10 @@ def formatTime(time):
 def saveEvent(request,eventId,name,address, date, description,city,time,eventType):
     # for add 
     if eventId == '0':
+        if request.method == 'POST':
+            if request.POST.get('name') == " " or request.POST.get('address') == " " or request.POST.get('date') == " " or request.POST.get('city') == " " or request.POST.get('time') == " ":
+                messages.error(request,'Please fill in all the fields to add new event.')
+                return redirect('addEvent')
         unformattedDate = request.POST.get('date')
         format_str = '%m/%d/%Y' # The format
         datetime_obj = datetime.datetime.strptime(unformattedDate, format_str)
@@ -117,6 +122,13 @@ def add_Event(request):
 def registerEvent(request,eventId):
     e = UserEventRegisteration(userId_id=request.user.id,eventID_id=eventId)
     e.save();
+    #adding observer pattern
+    subject = Observer.ConcreteSubject()
+    observer_a = Observer.ConcreteObserver()
+    subject.attach(observer_a)
+    subject.subject_state = "registered"
+    subject.detach(observer_a)
+    #enddd
     return redirect('listAll')
 
 def listAllRegisteredEvents(request):
@@ -126,3 +138,4 @@ def listAllRegisteredEvents(request):
         eventObj.append(Event.objects.get(id=eachEvent.eventID_id))
     context = {"totalEvents": eventObj, "registeredList":True}
     return render(request, 'listAllEvents.html',context)
+

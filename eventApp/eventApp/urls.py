@@ -19,9 +19,17 @@ from eventApp import views
 from django.conf.urls.static import static
 from django.conf import settings
 from .Views import chatterbotUtility
-from .Views import login
-from .Views import events
-from .Views import home
+#from .Views import login
+#from .Views import events
+#from .Views import home
+from .Views.eventsClass import EventOperations,EventRegistrations
+from .Views.login import Login
+from .Views.home import Home
+
+home = Home()
+login = Login()
+event = EventOperations()
+eventRegister = EventRegistrations()
 
 admin.autodiscover()
 urlpatterns = [
@@ -32,16 +40,16 @@ urlpatterns = [
     path("", home.homePage, name="login"),
     path("register/",login.register, name="register"),
     path("register/registerUser",login.registerUser, name="registerUser"),
-    path("listAll", events.list_all_events,  name="listAll"),
-    path("listAllRegisteredEvents", events.listAllRegisteredEvents,  name="listAllRegisteredEvents"),
-    path(r'^eventDetail/(?P<eventId>\d+)/$', events.event_detail, name='eventDetail'),
-    path(r'^editEvent/(?P<eventId>\d+)/$', events.edit_event, name='editEvent'),
-    path(r'^editEvent/(?P<eventId>\d+)/deleteEvent/$', events.deleteEvent, name='deleteEvent'),
-    path(r'^editEvent/(?P<eventId>\d+)/registerEvent/$', events.registerEvent, name='registerEvent'),
+    path("listAll", event.list_all_events,  name="listAll"),
+    path("listAllRegisteredEvents", eventRegister.listAllRegisteredEvents,  name="listAllRegisteredEvents"),
+    path(r'^eventDetail/(?P<eventId>\d+)/$', event.event_detail, name='eventDetail'),
+    path(r'^editEvent/(?P<eventId>\d+)/$', event.edit_event, name='editEvent'),
+    path(r'^editEvent/(?P<eventId>\d+)/deleteEvent/$', event.deleteEvent, name='deleteEvent'),
+    path(r'^editEvent/(?P<eventId>\d+)/registerEvent/$', eventRegister.registerEvent, name='registerEvent'),
     path("listAllEvents", login.login_request),
     path("logout_request", login.logout_request),
-    path("addEvent/", events.add_Event, name='addEvent'),
-    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<address>\w+)/(?P<date>\w+)/(?P<description>\w+)/(?P<city>\w+)/(?P<time>\w+)/(?P<eventType>\w+)/saveEvent/$', events.saveEvent, name="saveEvent")
+    path("addEvent/", event.add_Event, name='addEvent'),
+    path(r'^eventDetail/(?P<eventId>\d+)/(?P<name>\w+)/(?P<address>\w+)/(?P<date>\w+)/(?P<description>\w+)/(?P<city>\w+)/(?P<time>\w+)/(?P<eventType>\w+)/saveEvent/$', event.saveEvent, name="saveEvent")
 ]
 
 if settings.DEBUG == True:

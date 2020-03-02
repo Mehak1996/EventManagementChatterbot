@@ -50,6 +50,13 @@ $i(function() {
     interval: 30,startTime: '1:00',});
 });
 </script>
+
+<script>
+function hideError() {
+  var x = document.getElementById("error");
+  x.style.display = "none";
+}
+</script>
 </head>
 
 <body>
@@ -88,6 +95,9 @@ $i(function() {
       <textarea class="username" name="description" align="center" rows="6" >{{event.description}}</textarea><br/>
       <label class="label" for="image">Select Image :</label><br/>
       <input class="username" name="image"  align="center" type="file" accept="image/*"> 
+      {% for message in messages %}
+      <div id="error" class="alert">{{ message }}</div>
+      {% endfor %}
       <button class="submit"  type="submit" align="center">Save event </button>
     </form>    
 </div> 
