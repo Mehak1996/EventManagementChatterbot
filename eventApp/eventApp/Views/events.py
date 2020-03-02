@@ -6,6 +6,7 @@ from django.contrib import messages
 from eventApp.Models.models import Event,UserEventRegisteration
 from eventApp.Views import Observer
 from django.core.files.storage import FileSystemStorage
+from eventApp.Views import chatterbotUtility
 
 def list_all_events(request):
     obj = Event.objects.all()
@@ -53,6 +54,12 @@ def formatTime(time):
         formattedtime = time
     return formattedtime
 
+def formatDate(date):
+    format_str = '%m/%d/%Y' # The format
+    datetime_obj = datetime.datetime.strptime(date, format_str)
+    return datetime_obj
+
+
 def saveEvent(request,eventId,name,address, date, description,city,time,eventType):
     # for add 
     if eventId == '0':
@@ -72,22 +79,51 @@ def saveEvent(request,eventId,name,address, date, description,city,time,eventTyp
             fs.save(files.name,files)
             e.image.name = files.name
             e.save()
-            
+            chatterbotUtility.formulate_conversations(e)
+    
     # for edit
     elif eventId:
         obj = Event.objects.get(id=eventId)
-        obj.name = request.POST.get('name')
-        obj.address = request.POST.get('address')
-        obj.city = request.POST.get('city')
-        time = request.POST.get('time')
-        #formatting time
-        obj.time = formatTime(time)
-        obj.eventType = request.POST.get('eventType')
-        date = request.POST.get('date')
-        format_str = '%m/%d/%Y' # The format
-        datetime_obj = datetime.datetime.strptime(date, format_str)
-        obj.date = datetime_obj
-        obj.description = request.POST.get('description')
+        objStatus = {'name' : 'unMod', 'address' : 'unMod', 'eventDate' : 'unMod', 'desc' : 'unMod' , 'city' : 'unMod' , 'eventTime' : 'unMod', 'eventType' : 'unMod'}
+        
+        currentName = request.POST.get('name')
+        currentAddress = request.POST.get('address')
+        currentCity = request.POST.get('city')
+        currentTime = request.POST.get('time')
+        formattedCurrentTime = formatTime (currentTime)
+        currentEventType = request.POST.get('eventType')
+        currentDate = request.POST.get('date')
+        currentFormattedDate = formatDate (currentDate)
+        currentDesc = request.POST.get('description')
+
+        if (obj.name != currentName):
+            obj.name = currentName
+            objStatus['name'] = 'Mod'
+        
+        if (obj.address != currentAddress):
+            obj.address = currentAddress
+            objStatus['address'] = 'Mod'
+
+        if (obj.city != currentCity):
+            obj.city = currentCity
+            objStatus['city'] = 'Mod'
+
+        if (obj.time != formattedCurrentTime):
+            obj.time = formattedCurrentTime
+            objStatus['eventTime'] = 'Mod'
+        
+        if (obj.eventType != currentEventType):
+            obj.eventType = currentEventType
+            objStatus['eventType'] = 'Mod'
+        
+        if (obj.date != currentFormattedDate):
+            obj.date = currentFormattedDate
+            objStatus['eventDate'] = 'Mod'
+        
+        if (obj.description != currentDesc):
+            obj.description = currentDesc
+            objStatus['desc'] = 'Mod'
+
         #still to be fixed
         #if request.method == "GET" or request.method == "POST" :
         #    files = request.FILES["image"]
@@ -107,9 +143,9 @@ def saveEvent(request,eventId,name,address, date, description,city,time,eventTyp
             fs.save(files.name,files)
             obj.image.name = files.name
             obj.save()
-    
-    return redirect('listAll')
+        chatterbotUtility.edit_converstaions (obj, objStatus)
 
+    return redirect('listAll')
 
 def deleteEvent(request,eventId):
     Event.objects.get(id=eventId).delete()
