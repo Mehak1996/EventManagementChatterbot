@@ -83,10 +83,16 @@ function hideError() {
         <option value="Exhibitions" {% if event.eventType == "Exhibitions" %} selected {% endif %}>Exhibitions</option>
         <option value="Others" {% if event.eventType == "Others" %} selected {% endif %}>Others</option>
       </select><br/>
-      <label class="label" for="address">Location :</label><br/>
-      <input class="username" name="address" type="text" align="center"  value="{{event.address}}"><br/>
       <label class="label" for="city">City :</label><br/>
-      <input class="username" name="city" type="text" align="center"  value="{{event.city}}"><br/>
+      <select class="select" id="city" name="city"  form="loginform" align="center">
+        <option value="Regina" {% if event.city == "Regina" %} selected {% endif %}>Regina</option>
+        <option value="Sasktoon" {% if event.city == "Sasktoon" %} selected {% endif %}>Sasktoon</option>
+        <option value="Moose Jaw" {% if event.city == "Moose Jaw" %} selected {% endif %}>Moose Jaw</option>
+        <option value="Prince Albert" {% if event.city == "Prince Albert" %} selected {% endif %}>Prince Albert</option>
+        <option value="Yorkton" {% if event.city == "Yorkton" %} selected {% endif %}>Yorkton</option>
+       </select><br/>
+      <label class="label" for="address">Address :</label><br/>
+      <input class="username" name="address" type="text" align="center"  value="{{event.address}}"><br/>
       <label class="label" for="time">Time :</label><br/>
       <input class="username" id="time" name="time" type="text" align="center"  value="{{event.time}}"><br/>
       <label class="label" for="date">Date :</label><br/>
