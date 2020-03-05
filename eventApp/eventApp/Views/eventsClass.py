@@ -7,6 +7,8 @@ from eventApp.Models.models import Event,UserEventRegisteration
 from eventApp.Views import Observer
 from eventApp.Views.Factory import *
 from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage
+from eventApp.Views import chatterbotUtility
 
 class EventOperations():
 
@@ -57,6 +59,11 @@ class EventOperations():
             formattedtime = time
         return formattedtime
 
+    def formatDate(self, date):
+        format_str = '%m/%d/%Y' # The format
+        datetime_obj = datetime.datetime.strptime(date, format_str)
+        return datetime_obj
+
     def saveEvent(self,request,eventId,name,address, date, description,city,time,eventType):
         # for add 
         if eventId == '0':
@@ -76,23 +83,51 @@ class EventOperations():
                 fs.save(files.name,files)
                 e.image.name = files.name
                 e.save()
+            chatterbotUtility.formulate_conversations(e)
             messages.success(request, "Successfully added")
-                
-        # for edit
+
         elif eventId:
             obj = Event.objects.get(id=eventId)
-            obj.name = request.POST.get('name')
-            obj.address = request.POST.get('address')
-            obj.city = request.POST.get('city')
-            time = request.POST.get('time')
-            #formatting time
-            obj.time = self.formatTime(time)
-            obj.eventType = request.POST.get('eventType')
-            date = request.POST.get('date')
-            format_str = '%m/%d/%Y' # The format
-            datetime_obj = datetime.datetime.strptime(date, format_str)
-            obj.date = datetime_obj
-            obj.description = request.POST.get('description')
+            objStatus = {'name' : 'unMod', 'address' : 'unMod', 'eventDate' : 'unMod', 'desc' : 'unMod' , 'city' : 'unMod' , 'eventTime' : 'unMod', 'eventType' : 'unMod'}
+        
+            currentName = request.POST.get('name')
+            currentAddress = request.POST.get('address')
+            currentCity = request.POST.get('city')
+            currentTime = request.POST.get('time')
+            formattedCurrentTime = self.formatTime (currentTime)
+            currentEventType = request.POST.get('eventType')
+            currentDate = request.POST.get('date')
+            currentFormattedDate = self.formatDate (currentDate)
+            currentDesc = request.POST.get('description')
+
+            if (obj.name != currentName):
+                obj.name = currentName
+                objStatus['name'] = 'Mod'
+            
+            if (obj.address != currentAddress):
+                obj.address = currentAddress
+                objStatus['address'] = 'Mod'
+
+            if (obj.city != currentCity):
+                obj.city = currentCity
+                objStatus['city'] = 'Mod'
+
+            if (obj.time != formattedCurrentTime):
+                obj.time = formattedCurrentTime
+                objStatus['eventTime'] = 'Mod'
+            
+            if (obj.eventType != currentEventType):
+                obj.eventType = currentEventType
+                objStatus['eventType'] = 'Mod'
+            
+            if (obj.date != currentFormattedDate):
+                obj.date = currentFormattedDate
+                objStatus['eventDate'] = 'Mod'
+            
+            if (obj.description != currentDesc):
+                obj.description = currentDesc
+                objStatus['desc'] = 'Mod'
+
             #still to be fixed
             #if request.method == "GET" or request.method == "POST" :
             #    files = request.FILES["image"]
@@ -113,23 +148,24 @@ class EventOperations():
                 obj.image.name = files.name
                 obj.save()
             messages.success(request, "Successfully saved")
-        return redirect('listAll')
-
-
-    def deleteEvent(self,request,eventId):
-        Event.objects.get(id=eventId).delete()
-        messages.success(request, "Successfully deleted")
+            chatterbotUtility.edit_converstaions (obj, objStatus)
+            
         return redirect('listAll')
 
     def add_Event(self,request):
         context = {"event": {"id":0,"name":" ","date":" ","description":" ","address":" ","time":" ","city": " ","eventType":" "}, "date": " "}
         return render(request, 'addEvent.html',context)
+    
+    def deleteEvent(self, request, eventId):
+        Event.objects.get(id=eventId).delete()
+        message.success(request, 'Successfully deleted')
+        return redirect('listAll')
 
 class EventRegistrations:
 
     def registerEvent(self,request,eventId):
         e = UserEventRegisteration(userId_id=request.user.id,eventID_id=eventId)
-        res = e.save();
+        res = e.save()
         #adding observer pattern
         subject = Observer.ConcreteSubject()
         observer_a = Observer.ConcreteObserver()
