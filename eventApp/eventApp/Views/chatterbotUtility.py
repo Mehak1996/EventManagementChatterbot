@@ -22,7 +22,8 @@ trainer = ListTrainer(chatbot.storage)
 chatbot.read_only = True
 
 dialogObj = dialog.Dialogs()
-dialogs = dialogObj.get_dialog_data()
+dialogsQues = dialogObj.get_dialog_data('ques')
+dialogResp = dialogObj.get_dialog_data('ans')
 
 # chatbot.storage.drop()
 # chatbot.train('/Users/mehakluthra/Documents/EventManagementChatterbot/eventApp/custom_corpus/mehak.yml')
@@ -47,20 +48,20 @@ def get_response(request):
 			content_type="application/json"
 		)
 
-def edit_converstaions(obj,objStatus):
+def edit_converstaions(oldObj, obj,objStatus):
 	print('inside Edit conversations')   
 	
 	if (objStatus['address'] == 'Mod') or (objStatus['city'] == 'Mod'):
-		edit_dialog_event_location (obj)
+		edit_dialog_event_location (oldObj , obj)
 	if (objStatus['eventDate'] == 'Mod') :
-		edit_dialog_event_date (obj)
+		edit_dialog_event_date (oldObj, obj)
 	if (objStatus['eventType'] == 'Mod') :
-		edit_dialog_event_type (obj)
+		edit_dialog_event_type (oldObj, obj)
 	if (objStatus['eventTime'] == 'Mod'):
-		edit_dialog_event_time (obj)
+		edit_dialog_event_time (oldObj, obj)
 	if (objStatus['city'] == 'Mod'):
-		edit_dialog_event_city (obj)
-	edit_dialog_event_description(obj)
+		edit_dialog_event_city (oldObj, obj)
+	edit_dialog_event_description(oldObj, obj)
 
 def formulate_conversations(obj):
 	print('inside create conversations')
@@ -72,86 +73,80 @@ def formulate_conversations(obj):
 	create_dialog_event_description (obj.name, obj.city, obj.address, obj.date, obj.time, obj.eventType, obj.description)
 
 def create_dialog_event_location(name,city,address):
-	ansLocationType = 'Location of the event ' + name + ' is '+ city + ' , ' + address
+	ansLocationType = dialogResp['location'].get('res') + name + ' is '+ city + ' , ' + address
 
-	for key in dialogs['location']:
-		quesLocationType = dialogs['location'].get(key) + ' ' + name + ' ? '
+	for key in dialogsQues['location']:
+		quesLocationType = dialogsQues['location'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansLocationType )
 
 def create_dialog_event_date(name,strDate):
-	ansDateType = 'Date of the event ' + name + ' is ' + strDate.strftime('%m/%d/%Y')
+	ansDateType = dialogResp['date'].get('res') + name + ' is ' + strDate.strftime('%m/%d/%Y')
 
-	for key in dialogs['date']:
-		quesLocationType = dialogs['date'].get(key) + ' ' + name + ' ? '
+	for key in dialogsQues['date']:
+		quesLocationType = dialogsQues['date'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansDateType )
 
 def create_dialog_event_type(name,eventType):
-	ansDateType = 'Event type for the event ' + name + ' is ' + eventType
+	ansDateType = dialogResp['type'].get('res') + name + ' is ' + eventType
 
-	for key in dialogs['type']:
-		quesLocationType = dialogs['type'].get(key) + ' ' + name + ' ? '
+	for key in dialogsQues['type']:
+		quesLocationType = dialogsQues['type'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansDateType )
 
 def create_dialog_event_time(name,eventTime):
-	ansEventTime = 'Time of the event ' + name + ' is ' + eventTime
+	ansEventTime = dialogResp['time'].get('res') + name + ' is ' + eventTime
 
-	for key in dialogs['time']:
-		quesLocationType = dialogs['time'].get(key) + ' ' + name + ' ? '
+	for key in dialogsQues['time']:
+		quesLocationType = dialogsQues['time'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansEventTime )
 
 def create_dialog_event_city(name,eventCity):
-	ansEventCity = 'City of the event ' + name + ' is ' + eventCity
+	ansEventCity = dialogResp['city'].get('res') + name + ' is ' + eventCity
 
-	for key in dialogs['city']:
-		quesLocationType = dialogs['city'].get(key) + ' ' + name + ' ? '
+	for key in dialogsQues['city']:
+		quesLocationType = dialogsQues['city'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansEventCity )
 
-def create_dialog_event_description(name, city, address, strDate, time, eventType, description):
-	ansEventDescription =  'Event Name : ' + name + '\n' +  'Location: ' + city + ' , ' + address + '\n' + 'Date: ' + strDate.strftime('%m/%d/%Y') + '\n' + 'Time: ' + time + '\n' + 'Event Type: ' + eventType + '\n' + 'Description: ' + description
-
-	for key in dialogs['description']:
-		quesLocationType = dialogs['description'].get(key) + ' ' + name + ' ? '
+def create_dialog_event_description(name, city, address, strDate, eventTime, eventType, description):
+	ansEventDescription = 'Event Name : ' + name + '\n' +  'Location: ' + city + ' , ' + address + '\n' + 'Date: ' + strDate.strftime('%m/%d/%Y') + '\n' + 'Time: ' + eventTime + '\n' + 'Event Type: ' + eventType + '\n' + 'Description: ' + description
+	
+	for key in dialogsQues['description']:
+		quesLocationType = dialogsQues['description'].get(key) + ' ' + name + ' ? '
 		train_chatbot_with_question_answer( quesLocationType , ansEventDescription )
 
-def edit_dialog_event_location(obj):
-	quesLocationType = dialogs['location']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesLocationType)
-	remove_statement(oldResponse)
-		
+def edit_dialog_event_location(oldObj, obj):
+	textOldResponse = dialogResp['location'].get('res') + oldObj.name + ' is '+ oldObj.city + ' , ' + oldObj.address
+	remove_old_response (textOldResponse)
+	
 	create_dialog_event_location (obj.name, obj.city, obj.address)
 
-def edit_dialog_event_date(obj):
-	quesDateType = dialogs['date']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesDateType)
-	remove_statement(oldResponse)
+def edit_dialog_event_date(oldObj, obj):
+	textOldResponse = dialogResp['date'].get('res') + oldObj.name + ' is ' + oldObj.date.strftime('%m/%d/%Y')
+	remove_old_response (textOldResponse)
 
 	create_dialog_event_date(obj.name, obj.date)
 
-def edit_dialog_event_type(obj):
-	quesEventType = dialogs['type']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesEventType)
-	remove_statement(oldResponse)
+def edit_dialog_event_type(oldObj, obj):
+	textOldResponse = dialogResp['type'].get('res') + oldObj.name + ' is ' + oldObj.type
+	remove_old_response (textOldResponse)
 		
 	create_dialog_event_type (obj.name, obj.eventType)
 
-def edit_dialog_event_time(obj):
-	quesEventTime = dialogs['time']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesEventTime)
-	remove_statement(oldResponse)
+def edit_dialog_event_time(oldObj, obj):
+	textOldResponse = dialogResp['time'].get('res') + oldObj.name + ' is ' + convertTimeToStr (oldObj.time)
+	remove_old_response (textOldResponse)
 		
 	create_dialog_event_time (obj.name, obj.time)
 
-def edit_dialog_event_city(obj):
-	quesEventCity = dialogs['city']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesEventCity)
-	remove_statement(oldResponse)
+def edit_dialog_event_city(oldObj, obj):
+	textOldResponse = dialogResp['city'].get('res') + oldObj.name + ' is ' + oldObj.city
+	remove_old_response (textOldResponse)
 		
 	create_dialog_event_city (obj.name, obj.city)
 
-def edit_dialog_event_description(obj):
-	quesEventDesc = dialogs['description']['ques1'] + ' ' + obj.name + ' ? '
-	oldResponse = chatbot.get_response(quesEventDesc)
-	remove_statement(oldResponse)
+def edit_dialog_event_description(oldObj, obj):
+	textOldResponse = 'Event Name : ' + oldObj.name + '\n' +  'Location: ' + oldObj.city + ' , ' + oldObj.address + '\n' + 'Date: ' + oldObj.date.strftime('%m/%d/%Y') + '\n' + 'Time: ' + convertTimeToStr(oldObj.time) + '\n' + 'Event Type: ' + oldObj.eventType + '\n' + 'Description: ' + oldObj.description
+	remove_old_response (textOldResponse)
 		
 	create_dialog_event_description (obj.name, obj.city, obj.address, obj.date, obj.time, obj.eventType, obj.description)
 	
@@ -160,9 +155,14 @@ def train_chatbot_with_question_answer(question, answer):
 	trainer.train([question,answer])
 	chatbot.read_only = True
 
-def remove_statement(strStatement):
-	chatbot.storage.remove(strStatement)
+def remove_old_response(strStatement):
+	oldResponse = Statement (text = strStatement)
+	chatbot.storage.remove(oldResponse)
 
+def convertTimeToStr(timeObj):
+	minutes= str(timeObj.minute).zfill(2)
+	formattedTime = str(timeObj.hour)+":"+ str(minutes)+ " "
+	return formattedTime
 
 
 

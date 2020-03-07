@@ -9,6 +9,7 @@ from eventApp.Views.Factory import *
 from django.core.files.storage import FileSystemStorage
 from django.core.files.storage import FileSystemStorage
 from eventApp.Views import chatterbotUtility
+import copy
 
 class EventOperations():
 
@@ -35,8 +36,9 @@ class EventOperations():
     def edit_event(self,request,eventId):
         obj = Event.objects.get(id=eventId)
         formattedDate = obj.date.strftime("%m/%d/%Y")
-        #formattedTime = obj.time.hour+":"+obj.time.hour
-        context = {"event": obj, "date": formattedDate}
+        minutes= str(obj.time.minute).zfill(2)
+        formattedTime = str(obj.time.hour)+":"+str(minutes)
+        context = {"event": obj, "date": formattedDate,"time":formattedTime}
         return render(request, 'addEvent.html',context)
 
     def formatTime(self,time):
@@ -88,13 +90,13 @@ class EventOperations():
 
         elif eventId:
             obj = Event.objects.get(id=eventId)
+            oldObj = copy.deepcopy(obj)
             objStatus = {'name' : 'unMod', 'address' : 'unMod', 'eventDate' : 'unMod', 'desc' : 'unMod' , 'city' : 'unMod' , 'eventTime' : 'unMod', 'eventType' : 'unMod'}
         
             currentName = request.POST.get('name')
             currentAddress = request.POST.get('address')
             currentCity = request.POST.get('city')
             currentTime = request.POST.get('time')
-            formattedCurrentTime = self.formatTime (currentTime)
             currentEventType = request.POST.get('eventType')
             currentDate = request.POST.get('date')
             currentFormattedDate = self.formatDate (currentDate)
@@ -112,15 +114,15 @@ class EventOperations():
                 obj.city = currentCity
                 objStatus['city'] = 'Mod'
 
-            if (obj.time != formattedCurrentTime):
-                obj.time = formattedCurrentTime
+            if (self.convertTimeToStr (obj.time) != currentTime):
+                obj.time = currentTime
                 objStatus['eventTime'] = 'Mod'
             
             if (obj.eventType != currentEventType):
                 obj.eventType = currentEventType
                 objStatus['eventType'] = 'Mod'
             
-            if (obj.date != currentFormattedDate):
+            if (self.formatDate(obj.date.strftime("%m/%d/%Y")) != currentFormattedDate):
                 obj.date = currentFormattedDate
                 objStatus['eventDate'] = 'Mod'
             
@@ -148,7 +150,7 @@ class EventOperations():
                 obj.image.name = files.name
                 obj.save()
             messages.success(request, "Successfully saved")
-            chatterbotUtility.edit_converstaions (obj, objStatus)
+            chatterbotUtility.edit_converstaions (oldObj, obj, objStatus)
             
         return redirect('listAll')
 
@@ -158,8 +160,13 @@ class EventOperations():
     
     def deleteEvent(self, request, eventId):
         Event.objects.get(id=eventId).delete()
-        message.success(request, 'Successfully deleted')
+        messages.success(request, 'Successfully deleted')
         return redirect('listAll')
+
+    def convertTimeToStr(self, timeObj):
+        minutes= str(timeObj.minute).zfill(2)
+        formattedTime = str(timeObj.hour)+":"+ str(minutes)+ " "
+        return formattedTime
 
 class EventRegistrations:
 
@@ -186,5 +193,6 @@ class EventRegistrations:
             eventObj.append(Event.objects.get(id=eachEvent.eventID_id))
         context = {"totalEvents": eventObj, "registeredList":True}
         return render(request, 'listAllEvents.html',context)
+
 
 
