@@ -34,9 +34,10 @@ class EventOperations():
 
     def edit_event(self,request,eventId):
         obj = Event.objects.get(id=eventId)
-        formattedDate = obj.date.strftime("%m/%d/%Y")
-        #formattedTime = obj.time.hour+":"+obj.time.hour
-        context = {"event": obj, "date": formattedDate}
+        formattedDate = obj.date.strftime("%m/%d/%Y") 
+        minutes= str(obj.time.minute).zfill(2)
+        formattedTime = str(obj.time.hour)+":"+str(minutes)
+        context = {"event": obj, "date": formattedDate,"time":formattedTime}
         return render(request, 'addEvent.html',context)
 
     def formatTime(self,time):
@@ -158,7 +159,7 @@ class EventOperations():
     
     def deleteEvent(self, request, eventId):
         Event.objects.get(id=eventId).delete()
-        message.success(request, 'Successfully deleted')
+        messages.success(request, 'Successfully deleted')
         return redirect('listAll')
 
 class EventRegistrations:

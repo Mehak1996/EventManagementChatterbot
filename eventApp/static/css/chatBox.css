@@ -1,7 +1,7 @@
   
   /* The popup chat - hidden by default */
   .chat-popup {
-    background-color: rgba(136, 130, 130, 0.74);
+    background-color:rgba(255, 255, 255, 0.95);
     display: none;
     width: 400px;
     height: 500px;

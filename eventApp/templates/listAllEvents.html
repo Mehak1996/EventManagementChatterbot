@@ -22,7 +22,6 @@ function myFunction() {
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 function openForm() {
-    //document.getElementById("myForm").style.display = "block";
     var e = document.getElementById("myForm")
        if(e.style.display == 'block')
           e.style.display = 'none';
@@ -80,7 +79,7 @@ function openForm() {
     <hr class="rounded">
     {% endfor %}
     </div>  
-<div class="chat-popup" width="600px" height="500px"  id="myForm" >
+<div class="chat-popup" width="700px" height="500px"  id="myForm" >
 {% include "home.html" %}
 </div>
 <a class="floatButton" onclick="openForm()"><img src="/static/img/PowerChat.png" style=" width:85px;height:85px"alt="Avatar" ></a> 
