@@ -8,10 +8,12 @@ from eventApp.Views import Observer
 from eventApp.Views.Factory import *
 from django.core.files.storage import FileSystemStorage
 from django.core.files.storage import FileSystemStorage
-from eventApp.Views import chatterbotUtility
+from eventApp.Views.chatterbotUtility import ChatbotUtility
 import copy
 
 class EventOperations():
+
+    chatUtility = ChatbotUtility()
 
     def list_all_events(self,request):
 
@@ -85,7 +87,7 @@ class EventOperations():
                 fs.save(files.name,files)
                 e.image.name = files.name
                 e.save()
-            chatterbotUtility.formulate_conversations(e)
+            self.chatUtility.formulate_conversations(e)
             messages.success(request, "Successfully added")
 
         elif eventId:
@@ -150,7 +152,7 @@ class EventOperations():
                 obj.image.name = files.name
                 obj.save()
             messages.success(request, "Successfully saved")
-            chatterbotUtility.edit_converstaions (oldObj, obj, objStatus)
+            self.chatUtility.edit_converstaions (oldObj, obj, objStatus)
             
         return redirect('listAll')
 

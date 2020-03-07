@@ -18,7 +18,7 @@ from django.urls import path
 from eventApp import views
 from django.conf.urls.static import static
 from django.conf import settings
-from .Views import chatterbotUtility
+from .Views.chatterbotUtility import ChatbotUtility
 #from .Views import login
 #from .Views import events
 #from .Views import home
@@ -30,13 +30,14 @@ home = Home()
 login = Login()
 event = EventOperations()
 eventRegister = EventRegistrations()
+chatUtility = ChatbotUtility()
 
 admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('floatingbutton/', home.floating_button),
     path('chatbot/', home.home, name='chatbot'),
-    path('get-response/', chatterbotUtility.get_response),
+    path('get-response/', chatUtility.get_response),
     path("", home.homePage, name="login"),
     path("register/",login.register, name="register"),
     path("register/registerUser",login.registerUser, name="registerUser"),
