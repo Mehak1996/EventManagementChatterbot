@@ -1,17 +1,34 @@
-body {
+
+body  {
     background-color: #F3EBF6;
     font-family: 'Ubuntu', sans-serif;
 }
 
+.nameHeader h1{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.subheader{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 27px;
+  margin-top:15px;
+  margin-left: 15px;
+}
+h2{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 27px;
+}
   /* Create two equal columns that floats next to each other */
-  .column {
+  .listColumn {
     float: left;
     width: 99%;
     padding: 10px;
   }
   
   /* Clear floats after the columns */
-  .row:after {
+  .listRow:after {
     content: "";
     display: table;
     clear: both;
@@ -83,7 +100,7 @@ body {
   .nameHeader{
     margin-top:20px;
     background-color: #8C55AA;
-    height: 80px;
+    height: 110px;
     padding:20px;
 }
 .subheader{
@@ -100,5 +117,6 @@ body {
   padding: 5px;
   width: 150px;
 }
+
 
   

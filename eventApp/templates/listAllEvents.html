@@ -1,29 +1,35 @@
 {% load static %}
  <html>
+  
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel='stylesheet' href="/static/css/events.css">
+  <link rel='stylesheet' href="/static/css/floatingButton.css">
   <link rel='stylesheet' href="/static/css/message.css">
+  <link rel='stylesheet' href="/static/css/chatBox.css">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>Welcome</title>
-
+{% block js %}
+  <script type="text/javascript" src="/static/js/script.js"></script>
+{% endblock %}
 <script>
+window.addEventListener("load", myFunction, false); 
 function myFunction() {
   var x = document.getElementById("sucessSnackbar");
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
+function openForm() {
+    var e = document.getElementById("myForm")
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+}
 </script>
-
-<body onload="myFunction()">
-{% if messages %}
-{% for message in messages %}
-<div id="sucessSnackbar">{{ message }}</div>
-{% endfor %}
-{% endif %}
-    <header class="nameHeader" >
+<header class="nameHeader" >
         <h1 >Welcome {{request.user.username}}  </h1>
         <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;float:right">Logout</button>      
         {% if request.user.is_superuser %}
@@ -36,15 +42,22 @@ function myFunction() {
            {% endif %}
         {% endif %}  
          </header>
+<body onload="myFunction()">
+{% if messages %}
+{% for message in messages %}
+<div id="sucessSnackbar">{{ message }}</div>
+{% endfor %}
+{% endif %}
+    
 
 {% if registeredList %}
 <h2 class ="subheader" >  List of your registered events </h2>
 {% else %}
 <h2 class ="subheader" >  List of all the events </h2>
 {% endif %}
-    <div class="row">
+    <div class="listRow">
     {% for event in totalEvents %}
-    <div class="column" id={{ event.id}}>
+    <div class="listColumn" id={{ event.id}}>
         <img src={{ event.image.url}} alt="Avatar" >
         {% if request.user.is_superuser %}
         <button class="editButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
@@ -66,5 +79,9 @@ function myFunction() {
     <hr class="rounded">
     {% endfor %}
     </div>  
+<div class="chat-popup" width="700px" height="500px"  id="myForm" >
+{% include "home.html" %}
+</div>
+<a class="floatButton" onclick="openForm()"><img src="/static/img/PowerChat.png" style=" width:85px;height:85px"alt="Avatar" ></a> 
 </body>
 </html>

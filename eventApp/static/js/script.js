@@ -6,7 +6,7 @@ window.onload = function () {
 	    messages: [],
 	    input: '',
 	    send_blank: false,
-	    placeholder: 'Send a message to the chatbot...',
+		placeholder: 'Send a message to the chatbot...',
 	  },
 	  created: function() {
 	  	
@@ -46,7 +46,6 @@ window.onload = function () {
 				this.send_blank = true;
 				this.placeholder = "Please put in some text";
 			}
-
 		},
 		check_content: function() {
 			if (this.input.length > 0) {

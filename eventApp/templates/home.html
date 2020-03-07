@@ -2,12 +2,26 @@
 
 {% block js %}
   <script type="text/javascript" src="/static/js/script.js"></script>
+  <script>
+window.addEventListener("load", Init, false); 
+function Init () {
+            container = document.getElementById ("app");
+            if (container.addEventListener) {
+                container.addEventListener ('DOMSubtreeModified', add_scroll, false);
+            }
+
+        }
+function add_scroll(){
+	var e = document.getElementById("myForm")
+  	e.scrollTop = e.scrollHeight - e.clientHeight;
+}
+</script>
 {% endblock %}
 
 {% block content %}
   <div id="app" class="container top-padding">
   	<div class="row">
-  		<div class="col-md-12">
+  		<div class="col-md-12" >
   			<div class="card col-md-6" v-for="message in messages" v-bind:class="{ 'user-message': message.user,  'chat-message': message.chat_bot, 'offset-md-6': message.chat_bot}">
 	  			<div class="card-body">
 	  				[[message.text]]
@@ -18,10 +32,10 @@
   	</div>
   	<div id="text-box" class="row top-padding">
   		<div class="col-md-12">
-  			<textarea class="form-control" v-bind:placeholder="placeholder" v-model="input" v-bind:class="{ 'border-danger': send_blank}" v-on:change="check_content"></textarea>
-  			<i class="fas fa-arrow-circle-right send-btn" v-on:click="add_message"></i>
+  			<textarea id="textmessage" class="form-control"  v-bind:placeholder="placeholder" v-model="input" v-bind:class="{ 'border-danger': send_blank}" v-on:change="check_content"></textarea>
+  			<i class="fas fa-arrow-circle-right send-btn"  v-on:click="add_message" onclick="add_scroll()"></i>
   		</div>
   	</div>
   </div>
-{% endblock %}
+{% endblock %}	
 
