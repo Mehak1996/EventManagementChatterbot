@@ -24,9 +24,7 @@ from .Views.chatterbotUtility import ChatbotUtility
 #from .Views import home
 from .Views.eventsClass import EventOperations,EventRegistrations
 from .Views.login import Login
-from .Views.home import Home
 
-home = Home()
 login = Login()
 event = EventOperations()
 eventRegister = EventRegistrations()
@@ -35,10 +33,8 @@ chatUtility = ChatbotUtility()
 admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('floatingbutton/', home.floating_button),
-    path('chatbot/', home.home, name='chatbot'),
     path('get-response/', chatUtility.get_response),
-    path("", home.homePage, name="login"),
+    path("", login.homePage, name="login"),
     path("register/",login.register, name="register"),
     path("register/registerUser",login.registerUser, name="registerUser"),
     path("listAll", event.list_all_events,  name="listAll"),

@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 import re
 
 class Login:
+    def homePage(self,request):
+        return render(request,'login.html')
+        
     def login_request(self,request):
         if request.method == 'POST':
             username = request.POST.get('username')
