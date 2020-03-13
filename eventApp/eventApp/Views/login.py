@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from eventApp.Views.Factory import *
 from django.contrib.auth.models import User
 import re
 
@@ -18,7 +19,9 @@ class Login:
                 login(request, user)
                 return redirect('listAll')
             else:
-                messages.error(request,'Invalid username or password.')
+                messageFactory = MessageFactory().get_message("InlineFailure")
+                messages.error(request, messageFactory.get_messageText()+"Invalid username or password.")
+                #messages.error(request,'Invalid username or password.')
                 return redirect('login')
 
     def register(self,request):
@@ -33,13 +36,17 @@ class Login:
             passwords=request.POST.get('password')
             cpasswords=request.POST.get('confirmPassword')
             if uname == "" or fname == "" or lname == "" or emailAddress == "" or passwords == "" or cpasswords == "" :
-                messages.error(request,'Please fill in all the fields to register.')
+                messageFactory = MessageFactory().get_message("InlineFailure")
+                messages.error(request, messageFactory.get_messageText()+"Please fill in all the fields to register.")
+                #messages.error(request,'Please fill in all the fields to register.')
                 return redirect('register')
             elif  passwords != cpasswords :
-                messages.error(request,'Password and Confirm password do not match.')
+                messageFactory = MessageFactory().get_message("InlineFailure")
+                messages.error(request,messageFactory.get_messageText()+'Password and Confirm password do not match.')
                 return redirect('register')
             elif re.search('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$',emailAddress) == None:
-                messages.error(request,'Please enter a valid email address.')
+                messageFactory = MessageFactory().get_message("InlineFailure")
+                messages.error(request,messageFactory.get_messageText()+'Please enter a valid email address.')
                 return redirect('register')
             else :
                 u = User.objects.create_user(username=uname,first_name=fname,last_name=lname,email=emailAddress,password=passwords)

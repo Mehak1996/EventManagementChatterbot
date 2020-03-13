@@ -18,8 +18,15 @@
 window.addEventListener("load", myFunction, false); 
 function myFunction() {
   var x = document.getElementById("sucessSnackbar");
+  if (x){
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+  var y = document.getElementById("infoSnackbar");
+  if (y){
+  y.className = "show";
+  setTimeout(function(){ y.className = y.className.replace("show", ""); }, 3000);
+  }
 }
 function openForm() {
     var e = document.getElementById("myForm")
@@ -45,7 +52,11 @@ function openForm() {
 <body onload="myFunction()">
 {% if messages %}
 {% for message in messages %}
+{% if message.tags == "info"%}
+<div id="infoSnackbar">{{ message }}</div>
+{%else%}
 <div id="sucessSnackbar">{{ message }}</div>
+{% endif %}
 {% endfor %}
 {% endif %}
     

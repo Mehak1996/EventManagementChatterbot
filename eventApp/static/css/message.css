@@ -1,4 +1,4 @@
-#sucessSnackbar {
+#sucessSnackbar{
     visibility: hidden;
     min-width: 250px;
     margin-left: -125px;
@@ -9,6 +9,21 @@
     padding: 16px;
     position: fixed;
     z-index: 1;
+    left: 50%;
+    top: 150px;
+    font-size: 17px;
+  }
+  #infoSnackbar{
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: rgb(212, 210, 88);
+    color: rgb(73, 70, 70);
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 11;
     left: 50%;
     top: 150px;
     font-size: 17px;
@@ -28,7 +43,7 @@
     top: 150px;
     font-size: 17px;
   }
-  #sucessSnackbar.show , #failureSnackbar.show  {
+  #sucessSnackbar.show , #infoSnackbar.show, #failureSnackbar.show  {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;

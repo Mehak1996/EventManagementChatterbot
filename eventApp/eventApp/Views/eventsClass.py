@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,HttpResponseRedirect
 import json
 import datetime 
 from django.contrib import messages
@@ -74,6 +74,8 @@ class EventOperations():
             if request.method == 'POST':
                 if request.POST.get('name') == " " or request.POST.get('address') == " " or request.POST.get('date') == " " or request.POST.get('city') == " " or request.POST.get('time') == " ":
                     messages.error(request,'Please fill in all the fields to add new event.')
+                    #messageFactory = MessageFactory().get_message("Failure")
+                    #messages.error(request, messageFactory.get_messageText())
                     return redirect('addEvent')
             unformattedDate = request.POST.get('date')
             format_str = '%m/%d/%Y' # The format
@@ -88,7 +90,9 @@ class EventOperations():
                 e.image.name = files.name
                 e.save()
             self.chatUtility.formulate_conversations(e)
-            messages.success(request, "Successfully added")
+            messageFactory = MessageFactory().get_message("Success")
+            messages.success(request, messageFactory.get_messageText())
+            #messages.success(request, "Successfully added")
 
         elif eventId:
             obj = Event.objects.get(id=eventId)
@@ -151,7 +155,8 @@ class EventOperations():
                 fs.save(files.name,files)
                 obj.image.name = files.name
                 obj.save()
-            messages.success(request, "Successfully saved")
+            messageFactory = MessageFactory().get_message("Success")
+            messages.success(request, messageFactory.get_messageText())
             self.chatUtility.edit_converstaions (oldObj, obj, objStatus)
             
         return redirect('listAll')
@@ -162,7 +167,9 @@ class EventOperations():
     
     def deleteEvent(self, request, eventId):
         Event.objects.get(id=eventId).delete()
-        messages.success(request, 'Successfully deleted')
+        messageFactory = MessageFactory().get_message("Success")
+        messages.success(request, messageFactory.get_messageText())
+        #messages.success(request, 'Successfully deleted')
         return redirect('listAll')
 
     def convertTimeToStr(self, timeObj):
@@ -182,12 +189,12 @@ class EventRegistrations:
         subject.subject_state = "registered"
         subject.detach(observer_a)
 
+        obj = Event.objects.get(id=eventId)
         #adding factory pattern
-        messageFactory = MessageFactory().get_message("Success")
-        print(messageFactory.get_messageText())
-        messages.success(request, "Successfully registered")
+        messageFactory = MessageFactory().get_message("Info")
+        messages.info(request, messageFactory.get_messageText()+obj.name+" event")
         return redirect('listAll')
-
+            
     def listAllRegisteredEvents(self,request):
         obj = UserEventRegisteration.objects.all().filter(userId_id=request.user.id)
         eventObj=[]

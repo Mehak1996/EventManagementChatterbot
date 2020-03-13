@@ -16,7 +16,7 @@ class ChatbotUtility():
 		'Event_App_Chatbot',
 		#trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
 		storage_adapter='chatterbot.storage.SQLStorageAdapter',
-		database_uri='mysql://root:mehak1996@localhost/EventApp',
+		database_uri='mysql://root:man1995root@localhost/myDatabase',
 		logic_adapters=[
 				{
 					"import_path": "chatterbot.logic.BestMatch",
@@ -140,7 +140,7 @@ class ChatbotUtility():
 		self.create_dialog_event_date(obj.name, obj.date)
 
 	def edit_dialog_event_type(self, oldObj, obj):
-		textOldResponse = self.dialogResp['type'].get('res') + oldObj.name + ' is ' + oldObj.type
+		textOldResponse = self.dialogResp['type'].get('res') + oldObj.name + ' is ' + oldObj.eventType
 		self.remove_old_response (textOldResponse)
 			
 		self.create_dialog_event_type (obj.name, obj.eventType)
