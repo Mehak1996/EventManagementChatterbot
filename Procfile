@@ -1,1 +1,1 @@
-web: python eventApp\manage.py runserver 0.0.0.0:5000
+web: gunicorn eventApp.wsgi --log-file -
