@@ -1,1 +1,1 @@
-web: gunicorn EventManagementChatterbot.wsgi --log-file -
+web: gunicorn eventApp.wsgi --log-file -
