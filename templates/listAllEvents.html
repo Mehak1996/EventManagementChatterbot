@@ -1,0 +1,98 @@
+{% load static %}
+ <html>
+  
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel='stylesheet' href="/static/css/events.css">
+  <link rel='stylesheet' href="/static/css/floatingButton.css">
+  <link rel='stylesheet' href="/static/css/message.css">
+  <link rel='stylesheet' href="/static/css/chatBox.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<title>Welcome</title>
+{% block js %}
+  <script type="text/javascript" src="/static/js/script.js"></script>
+{% endblock %}
+<script>
+window.addEventListener("load", myFunction, false); 
+function myFunction() {
+  var x = document.getElementById("sucessSnackbar");
+  if (x){
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+  var y = document.getElementById("infoSnackbar");
+  if (y){
+  y.className = "show";
+  setTimeout(function(){ y.className = y.className.replace("show", ""); }, 3000);
+  }
+}
+function openForm() {
+    var e = document.getElementById("myForm")
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+}
+</script>
+<header class="nameHeader" >
+        <h1 >Welcome {{request.user.username}}  </h1>
+        <button class="topButton" onclick="location.href='logout_request';" style="vertical-align:middle;float:right">Logout</button>      
+        {% if request.user.is_superuser %}
+        <button class="topButton" onclick="location.href='addEvent';" style="vertical-align:middle;float:right">Add new Event</button>
+         {% else %}
+            {% if registeredList %}
+            <button class="topButton" onclick="location.href='listAll';" style="vertical-align:middle;float:right">Show all Events</button>
+            {% else %}
+             <button class="topButton" onclick="location.href='listAllRegisteredEvents';" style="vertical-align:middle;float:right">Show all registered Events</button>
+           {% endif %}
+        {% endif %}  
+         </header>
+<body onload="myFunction()">
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "info"%}
+<div id="infoSnackbar">{{ message }}</div>
+{%else%}
+<div id="sucessSnackbar">{{ message }}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+    
+
+{% if registeredList %}
+<h2 class ="subheader" >  List of your registered events </h2>
+{% else %}
+<h2 class ="subheader" >  List of all the events </h2>
+{% endif %}
+    <div class="listRow">
+    {% for event in totalEvents %}
+    <div class="listColumn" id={{ event.id}}>
+        <img src={{ event.image.url}} alt="Avatar" >
+        {% if request.user.is_superuser %}
+        <button class="editButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'editEvent' event.id %}';">Edit  <i class="fas fa-edit"></i></button>
+        <button class="deleteButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'deleteEvent' event.id %}';">Delete  <i class="fas fa-trash"></i> </button>
+        {% else %}
+        {% if registeredList %}
+        <p class="greenmessage" style="vertical-align:middle; float:right" >Already Registered  </p>
+        {% elif event.id in registered %}
+        <p class="greenmessage" style="vertical-align:middle; float:right" >Already Registered  </p>
+        {% else %}
+        <button class="deleteButton" style="vertical-align:middle; float:right" onclick="location.href='{% url 'registerEvent' event.id %}';">Register <i class="fas fa-check-square"></i> </button>
+        {% endif %}
+        {% endif %}
+        <div onclick="location.href='{% url 'eventDetail' event.id %}';"><h2>{{ event.name }}</h2></div>
+        <p class="venue"><i class="fas fa-calendar"></i>  {{ event.date }},{{ event.time }} at {{ event.address}},{{ event.city}} </p>
+        <p> Event type : {{ event.eventType}} </p>
+        <p> {{ event.description}} </p>
+    </div>
+    <hr class="rounded">
+    {% endfor %}
+    </div>  
+<div class="chat-popup" width="1000px" height="500px"  id="myForm" >
+{% include "home.html" %}
+</div>
+<a class="floatButton" onclick="openForm()"><img src="/static/img/PowerChat.png" style=" width:85px;height:85px"alt="Avatar" ></a> 
+</body>
+</html>
